@@ -76,6 +76,7 @@ class Tests {
 
     @Test
     @Tag("Easy")
+
     fun thirdDigit() {
         assertEquals(8, thirdDigit(3801))
         assertEquals(1, thirdDigit(100))
