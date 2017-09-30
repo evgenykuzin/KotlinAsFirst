@@ -1,6 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
 
+import com.sun.org.apache.xpath.internal.operations.Number
+import java.lang.Math.*
 /**
  * Пример
  *
@@ -60,7 +62,18 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Найти количество цифр в заданном числе n.
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var k = 1
+    var m = n + 0.0
+    for (i in 1..n) {
+        if (m % 10 != m) {
+            k += 1
+            m /= 10
+            continue
+        } else break
+    }
+    return k
+}
 
 /**
  * Простая
@@ -68,7 +81,22 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var k = 2
+    var f1 = 1
+    var f2 = 1
+    var f3 = 0
+    if (n <= 2) f3 = 1
+    else {
+        while (k < n) {
+            f3 = f1 + f2
+            f1 = f2
+            f2 = f3
+            k += 1
+        }
+    }
+    return f3
+}
 
 /**
  * Простая
@@ -76,7 +104,16 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var k: Int = 1
+    do {
+        if (k % n == 0 && k % m == 0) {
+            break
+        } else k += 1
+        continue
+    } while (m == m)
+    return k
+}
 
 /**
  * Простая
@@ -134,7 +171,17 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var rev = 0
+    var m = n
+    for (i in 1..n) {
+        rev = rev * 10 + (m % 10)
+        m /= 10
+        if (m == 0) break
+        else continue
+    }
+    return rev
+}
 
 /**
  * Средняя
@@ -143,7 +190,13 @@ fun revert(n: Int): Int = TODO()
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var a = (pow(10.0, digitNumber(n) - 1.0) / 2).toInt()
+    return when {
+        n / a == revert(n % a) -> true
+        else -> false
+    }
+}
 
 /**
  * Средняя
