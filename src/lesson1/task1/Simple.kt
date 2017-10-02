@@ -77,8 +77,8 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
     val rg = grad / (180 / PI) //переводим градусы
-    val rm = min / 3437.747 //переводим минуты
-    val rs = sec / 206264.8 //переводим секунды
+    val rm = min / (360 * 60 / (2 * PI)) //переводим минуты
+    val rs = sec / (360 * 60 * 60 / (2 * PI)) //переводим секунды
     return rg + rm + rs
 }
 

@@ -125,19 +125,17 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val alf = acos(a / c)
-    val bet = acos((sqr(a) + sqr(c) - sqr(b)) / (2 * a * c))
-    val gam = 180.0 - a - b
-    if (alf != 90.0 && bet != 90.0 && gam != 90.0) {
-        return when {
-            (alf < 90 && alf > 0) && (bet < 90 && bet > 0) && (gam < 90 && gam > 0) -> 0
-            ((alf > 90) || (bet > 90) || (gam > 90)) && (alf < 180 && bet < 180 && gam < 180) -> 2
-            else -> -1
+    val maxl = max(max(a, b), c)
+    val minl = min(min(a, b), c)
+    val ml = (a + b + c) - (maxl + minl)
+    return when {
+        maxl > minl + ml -> -1
+        sqr(maxl) > sqr(minl) + sqr(ml) -> 2
+        sqr(maxl) == sqr(minl) + sqr(ml) -> 1
+        else -> 0
         }
-    } else {
-        return 1
     }
-}
+
 /**
  * Средняя
  *
@@ -146,16 +144,4 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (b >= a && d >= c) {
-        return when {
-            a + b > c + d -> c + d
-            c + d > a + b -> a + b
-            c + a > a + b -> a + b
-            c + b > a + d -> a + d
-            a + d > c + b -> c + b
-            b + d > c + a -> c + a
-            else -> -1
-        }
-    } else return -1
-}
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()

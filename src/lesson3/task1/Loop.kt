@@ -120,7 +120,14 @@ fun lcm(m: Int, n: Int): Int {
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    var del = 2
+    for (i in 1..n) {
+        if (n % del == 0) break
+        else del += 1
+    }
+    return del
+}
 
 /**
  * Простая
@@ -204,7 +211,21 @@ fun isPalindrome(n: Int): Boolean {
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    val compare = n % 10
+    var m = n
+    var rez = false
+    if (m != 0) {
+        while (m > 0) {
+            m /= 10
+            if (m % 10 != compare) {
+                rez = true
+                break
+            } else continue
+        }
+    }
+    return rez
+}
 
 /**
  * Сложная

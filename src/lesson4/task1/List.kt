@@ -2,6 +2,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import java.lang.Math.pow
 
 /**
  * Пример
@@ -113,7 +114,16 @@ fun abs(v: List<Double>): Double = TODO()
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double {
+    var rez = 0.0
+    if (list == emptyList<Double>()) return 0.0
+    else {
+        for (i in list) {
+            rez += i
+        }
+    }
+    return rez / list.size
+}
 
 /**
  * Средняя
@@ -123,7 +133,15 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    if (list.isNotEmpty()) {
+        val Mean = mean(list)
+        for (i in 0..(list.size - 1)) {
+            list[i] -= Mean
+        }
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -210,7 +228,35 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    val list1 = listOf<String>("a", "b", "c", "d", "e", "f", "g")
+    var rez = 0.0
+    var k = 1.0
+    for (j in 0 until str.length) {
+
+        for (i in 0 until list1.size) {
+            if (list1[i] == str[j].toString()) {
+                rez += ((pow(base.toDouble(), str.length - k)) * (10 + i))
+                println("if")
+                println(str)
+                println(((pow(base.toDouble(), str.length - k)) * (10 + i)))
+            } else {
+                rez += ((pow(base.toDouble(), str.length - k)) * str[j].toInt() - '0'.toInt())
+                println("else")
+                println(str)
+                println(((pow(base.toDouble(), str.length - k)) * str[j].toInt() - '0'.toInt()))
+                println(base.toDouble())
+                println(str.length - k)
+                println(str[j].toInt() - '0'.toInt())
+                println(k)
+            }
+        }
+
+        if (str.length - 1 > 0) k += 1
+    }
+
+    return rez.toInt() / 7
+}
 
 /**
  * Сложная
