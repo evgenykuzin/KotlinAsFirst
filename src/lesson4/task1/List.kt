@@ -229,33 +229,44 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val list1 = listOf<String>("a", "b", "c", "d", "e", "f", "g")
+    val list1 = listOf<String>("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
     var rez = 0.0
-    var k = 1.0
+    var k = 0.0
+    var a = 0
+    println(k)
     for (j in 0 until str.length) {
-
+        println("j$j")
+        var triger = 1
         for (i in 0 until list1.size) {
+
             if (list1[i] == str[j].toString()) {
-                rez += ((pow(base.toDouble(), str.length - k)) * (10 + i))
-                println("if")
-                println(str)
-                println(((pow(base.toDouble(), str.length - k)) * (10 + i)))
-            } else {
-                rez += ((pow(base.toDouble(), str.length - k)) * str[j].toInt() - '0'.toInt())
-                println("else")
-                println(str)
-                println(((pow(base.toDouble(), str.length - k)) * str[j].toInt() - '0'.toInt()))
-                println(base.toDouble())
-                println(str.length - k)
-                println(str[j].toInt() - '0'.toInt())
-                println(k)
+                triger = 2
+                a = i
+                break
             }
         }
+        k += 1
+        if (triger == 2) {
+            rez += ((pow(base.toDouble(), str.length - k)) * (10 + a))
+            println("if")
+            println(str)
+            println(((rez + pow(base.toDouble(), str.length - k) * (10 + a))))
+        } else {
+            println(rez)
+            rez += ((pow(base.toDouble(), str.length - k)) * (str[j] - '0'))
+            println("else")
+            println(str)
 
-        if (str.length - 1 > 0) k += 1
+            println((((pow(base.toDouble(), (str.length - k))) * (str[j] - '0'))))
+            println(base.toDouble())
+            println(str.length - k)
+            println((str[j] - '0').toInt())
+            println(pow(base.toDouble(), str.length - k))
+            println("k$k")
+        }
     }
 
-    return rez.toInt() / 7
+    return rez.toInt()
 }
 
 /**
