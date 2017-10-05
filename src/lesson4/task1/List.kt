@@ -2,6 +2,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import java.lang.Math.max
 import java.lang.Math.pow
 
 /**
@@ -150,7 +151,15 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
-fun times(a: List<Double>, b: List<Double>): Double = TODO()
+fun times(a: List<Double>, b: List<Double>): Double {
+    var C = 0.0
+    if (a.isNotEmpty() && b.isNotEmpty()) {
+        for (i in 0 until max(a.size, b.size)) {
+            C += a[i] * b[i]
+        }
+    }
+    return C
+}
 
 /**
  * Средняя
@@ -160,7 +169,18 @@ fun times(a: List<Double>, b: List<Double>): Double = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double = TODO()
+fun polynom(p: List<Double>, x: Double): Double {
+    var PX = 0.0
+    if (p.isNotEmpty()) {
+        PX = p[0]
+        for (i in 1 until p.size) {
+            if (p.size > 1) {
+                PX += p[i] * Math.pow(x, i.toDouble())
+            } else break
+        }
+    }
+    return PX
+}
 
 /**
  * Средняя
@@ -172,7 +192,16 @@ fun polynom(p: List<Double>, x: Double): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
+fun accumulate(list: MutableList<Double>): MutableList<Double> {
+    if (list.isNotEmpty()) {
+        if (list.size > 1) {
+            for (i in 1 until list.size) {
+                list[i] = list[i] + list[i - 1]
+            }
+        }
+    }
+    return list
+}
 
 /**
  * Средняя

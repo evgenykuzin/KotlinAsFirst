@@ -198,11 +198,18 @@ fun revert(n: Int): Int {
  * 15751 -- палиндром, 3653 -- нет.
  */
 fun isPalindrome(n: Int): Boolean {
-    var a = (pow(10.0, digitNumber(n) - 1.0) / 2).toInt()
-    return when {
-        n / a == revert(n % a) -> true
-        else -> false
+    var rez = false
+    for (i in 0 until
+
+            (n.toString().length) / 2) {
+        if (n.toString()[i] == revert((n % (pow(10.0, (i + 1.0))) / 10).toInt()).toChar()) {
+            rez = true
+        } else {
+            rez = false
+            break
+        }
     }
+    return rez
 }
 
 /**
