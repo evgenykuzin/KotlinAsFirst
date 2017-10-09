@@ -48,12 +48,10 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
                  x2: Double, y2: Double, r2: Double): Boolean {
-    return when {
-        (r2 >= r1) && (r2 >= x1) && (r2 >= y1) && (r2 >= x2) && (r2 >= y2) -> true
-        else -> false
-    }
+    var rez = false
+    if ((r2 - r1 - x2 >= 0) || (r2 - r1 - y2 >= 0) || r2 == r1) rez = true
+    return rez
 }
-
 /**
  * Средняя
  *

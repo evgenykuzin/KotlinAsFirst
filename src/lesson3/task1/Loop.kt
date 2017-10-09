@@ -163,10 +163,11 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var rez = false
-    for (i in 1..(n - m)) {
-        if (((sqrt(m.toDouble() + i.toDouble()) % 2).toInt() == 0) || ((sqrt(m.toDouble() + i.toDouble()) % 2).toInt() == 5)) {
+    for (i in m..n) {
+        if (sqrt(i.toDouble()) % 1 == 0.0) {
             rez = true
-        }
+            break
+        } else continue
     }
     return rez
 }
@@ -214,20 +215,7 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean {
-    var rez = false
-    for (i in 0 until
-
-            (n.toString().length) / 2) {
-        if (n.toString()[i] == revert((n % (pow(10.0, (i + 1.0))) / 10).toInt()).toChar()) {
-            rez = true
-        } else {
-            rez = false
-            break
-        }
-    }
-    return rez
-}
+fun isPalindrome(n: Int): Boolean = (n == revert(n))
 
 /**
  * Средняя
@@ -236,16 +224,12 @@ fun isPalindrome(n: Int): Boolean {
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    val compare = n % 10
-    var m = n
+    var m = n.toString()
     var rez = false
-    if (m != 0) {
-        while (m > 0) {
-            m /= 10
-            if (m % 10 != compare) {
+    for (i in 0 until digitNumber(n)) {
+        if (m[i] != m[0]) {
                 rez = true
                 break
-            } else continue
         }
     }
     return rez

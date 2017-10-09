@@ -63,9 +63,9 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int {
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val versh = 4.445//определяем вершки
-    val arsh = (48.0 / 3.0) * versh//определяем аршины
-    val sage = 48.0 * versh//определяем сажени
+    val versh = 4.445
+    val arsh = (48.0 / 3.0) * versh
+    val sage = 48.0 * versh
     return ((versh * vershoks) + (arsh * arshins) + (sage * sagenes)) / 100
 }
 
@@ -76,9 +76,9 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
-    val rg = grad / (180 / PI) //переводим градусы
-    val rm = min / (360 * 60 / (2 * PI)) //переводим минуты
-    val rs = sec / (360 * 60 * 60 / (2 * PI)) //переводим секунды
+    val rg = grad / (180 / PI)
+    val rm = min / (360 * 60 / (2 * PI))
+    val rs = sec / (360 * 60 * 60 / (2 * PI))
     return rg + rm + rs
 }
 
@@ -88,9 +88,7 @@ fun angleInRadian(grad: Int, min: Int, sec: Int): Double {
  * Найти длину отрезка, соединяющего точки на плоскости с координатами (x1, y1) и (x2, y2).
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
-fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double {
-    return sqrt(sqr(x1 - x2) + sqr(y2 - y1))//находим гипотенузу
-}
+fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr(x1 - x2) + sqr(y2 - y1))
 
 /**
  * Простая
@@ -98,9 +96,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double {
  * Пользователь задает целое число, большее 100 (например, 3801).
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
-fun thirdDigit(number: Int): Int {
-    return (number % 1000) / 100
-}
+fun thirdDigit(number: Int): Int = (number % 1000) / 100
 
 /**
  * Простая
@@ -109,12 +105,11 @@ fun thirdDigit(number: Int): Int {
  * прибыл на станцию назначения в h2 часов m2 минут того же дня (например в 13:01).
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
-fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int {
-    return (60 * hoursArrive + minutesArrive) - (60 * hoursDepart + minutesDepart)
-    /** переводим все в минуты
-     * и из времени прибытия вычитаем время отправления
-     */
-}
+fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int =
+        (60 * hoursArrive + minutesArrive) - (60 * hoursDepart + minutesDepart)
+/** переводим все в минуты
+ * и из времени прибытия вычитаем время отправления
+ */
 
 /**
  * Простая
@@ -124,10 +119,10 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val g1 = ((initial / 100.0) * percent) + initial//начисляем проценты за первый год
-    val g2 = ((g1 / 100.0) * percent) + g1//за второй
-    val g3 = ((g2 / 100.0) * percent) + g2//за третий, и это ответ
-    return g3
+    val g1 = ((initial / 100.0) * percent) + initial
+    val g2 = ((g1 / 100.0) * percent) + g1
+    return ((g2 / 100.0) * percent) + g2
+
 }
 
 /**
@@ -137,8 +132,8 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  *Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
 fun numberRevert(number: Int): Int {
-    val hgs = number % 10 * 100 //превращяем единицы в сотни
-    val tns = (number % 100 / 10) * 10//десятки остаются, но посчитать надо
-    val ons = number / 100//превращяем сотни в единицы
+    val hgs = number % 10 * 100
+    val tns = (number % 100 / 10) * 10
+    val ons = number / 100
     return hgs + tns + ons
 }

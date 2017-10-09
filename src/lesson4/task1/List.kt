@@ -262,12 +262,9 @@ fun decimalFromString(str: String, base: Int): Int {
     var rez = 0.0
     var k = 0.0
     var a = 0
-    println(k)
     for (j in 0 until str.length) {
-        println("j$j")
         var triger = 1
         for (i in 0 until list1.size) {
-
             if (list1[i] == str[j].toString()) {
                 triger = 2
                 a = i
@@ -277,24 +274,10 @@ fun decimalFromString(str: String, base: Int): Int {
         k += 1
         if (triger == 2) {
             rez += ((pow(base.toDouble(), str.length - k)) * (10 + a))
-            println("if")
-            println(str)
-            println(((rez + pow(base.toDouble(), str.length - k) * (10 + a))))
         } else {
-            println(rez)
             rez += ((pow(base.toDouble(), str.length - k)) * (str[j] - '0'))
-            println("else")
-            println(str)
-
-            println((((pow(base.toDouble(), (str.length - k))) * (str[j] - '0'))))
-            println(base.toDouble())
-            println(str.length - k)
-            println((str[j] - '0').toInt())
-            println(pow(base.toDouble(), str.length - k))
-            println("k$k")
         }
     }
-
     return rez.toInt()
 }
 
