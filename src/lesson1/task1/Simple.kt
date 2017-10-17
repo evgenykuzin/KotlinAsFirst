@@ -51,9 +51,7 @@ fun main(args: Array<String>) {
  * Пользователь задает время в часах, минутах и секундах, например, 8:20:35.
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
-fun seconds(hours: Int, minutes: Int, seconds: Int): Int {
-    return seconds + 60 * minutes + 3600 * hours
-}
+fun seconds(hours: Int, minutes: Int, seconds: Int): Int = seconds + 60 * minutes + 3600 * hours
 
 /**
  * Тривиальная
@@ -63,10 +61,10 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int {
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val versh = 4.445
-    val arsh = (48.0 / 3.0) * versh
-    val sage = 48.0 * versh
-    return ((versh * vershoks) + (arsh * arshins) + (sage * sagenes)) / 100
+    val vershokValue = 4.445
+    val arshinValue = (48.0 / 3.0) * vershokValue
+    val sageneValue = 48.0 * vershokValue
+    return ((vershokValue * vershoks) + (arshinValue * arshins) + (sageneValue * sagenes)) / 100
 }
 
 /**
@@ -118,12 +116,9 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val g1 = ((initial / 100.0) * percent) + initial
-    val g2 = ((g1 / 100.0) * percent) + g1
-    return ((g2 / 100.0) * percent) + g2
+fun accountInThreeYears(initial: Int, percent: Int): Double = initial * (pow((1 + (percent.toDouble() / 100.0)), 3.0))
 
-}
+
 
 /**
  * Простая

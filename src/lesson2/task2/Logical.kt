@@ -18,13 +18,9 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean {
-    val half1 = number / 1000
-    val half2 = number / 100 % 10
-    val half3 = number / 10 % 10
-    val half4 = number % 10
-
-    if (half1 + half2 == half3 + half4) return true
-    else return false
+    val half1 = number / 1000 + number / 100 % 10
+    val half2 = number / 10 % 10 + number % 10
+    return half1 == half2
 }
 
 /**
@@ -34,10 +30,7 @@ fun isNumberHappy(number: Int): Boolean {
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    if ((x1 == x2 || y1 == y2) || abs(x1 - x2) == abs(y1 - y2)) return true
-    else return false
-}
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = (x1 == x2 || y1 == y2) || abs(x1 - x2) == abs(y1 - y2)
 
 /**
  * Средняя
@@ -47,11 +40,8 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Вернуть true, если утверждение верно
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean {
-    var rez = false
-    if ((r2 - r1 - x2 >= 0) || (r2 - r1 - y2 >= 0) || r2 == r1) rez = true
-    return rez
-}
+                 x2: Double, y2: Double, r2: Double): Boolean = r2 >= sqrt(sqr(x2 - x1) + sqr(y2 - y1)) + r1
+
 /**
  * Средняя
  *
@@ -61,9 +51,4 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    return when {
-        ((r >= a) || (r >= b) || (r >= c)) && ((s >= a) || (s >= b) || (s >= c)) -> true
-        else -> false
-    }
-}
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = minOf(a, b, c) <= min(r, s) && a + b + c - minOf(a, b, c) - maxOf(a, b, c) <= max(r, s)
