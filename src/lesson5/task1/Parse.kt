@@ -72,11 +72,11 @@ fun dateStrToDigit(str: String): String {
         val day = (str.split(" ")[0]).toInt()
         val mon = months.indexOf(str.split(" ")[1]) + 1
         val year = (str.split(" ")[2]).toInt()
-        var rez = ""
+        var rezult = ""
         if (day > 0 && mon > 0 && year > 0) {
-            rez = String.format("%02d.%02d.%04d", day, mon, year)
+            rezult = String.format("%02d.%02d.%04d", day, mon, year)
         }
-        rez
+        rezult
     } else ""
 }
 
@@ -87,7 +87,23 @@ fun dateStrToDigit(str: String): String {
  * Перевести её в строковый формат вида "15 июля 2016".
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    return try {
+        val months = listOf<String>("", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+        val day = digital.split(".")[0].toInt()
+        val mon = months[digital.split(".")[1].toInt()]
+        val year = digital.split(".")[2].toInt()
+        var result = ""
+        if (day in 0..31 && year > 1000 && mon != "") {
+            result = String.format("%1d %3s %04d", day, mon, year)
+        }
+        result
+    } catch (e: NumberFormatException) {
+        ""
+    } catch (e: NullPointerException) {
+        ""
+    }
+}
 
 /**
  * Средняя
@@ -101,7 +117,17 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    var changedStr = ""
+    val partsOfStr = phone.split(' ', ')', '(', '-')
+    for (i in partsOfStr) changedStr += i
+    println(partsOfStr)
+    println(changedStr)
+    if (Regex("""^\+0123456789""").containsMatchIn(changedStr)) {
+        changedStr = ""
+    }
+    return changedStr
+}
 
 /**
  * Средняя
