@@ -67,14 +67,14 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    return if (str.length >= 11) {
+    return if (str.length >= 5) {
         val months = listOf<String>("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
         val day = (str.split(" ")[0]).toInt()
         val mon = months.indexOf(str.split(" ")[1]) + 1
         val year = (str.split(" ")[2]).toInt()
         var rezult = ""
         if (day > 0 && mon > 0 && year > 0) {
-            rezult = String.format("%02d.%02d.%04d", day, mon, year)
+            rezult = String.format("%02d.%02d.%d", day, mon, year)
         }
         rezult
     } else ""
@@ -94,13 +94,11 @@ fun dateDigitToStr(digital: String): String {
         val mon = months[digital.split(".")[1].toInt()]
         val year = digital.split(".")[2].toInt()
         var result = ""
-        if (day in 0..31 && year > 1000 && mon != "") {
+        if (day in 0..31 && year > 1000 && mon != "" && day != 0 && mon != "" && year != 0) {
             result = String.format("%1d %3s %04d", day, mon, year)
         }
         result
     } catch (e: NumberFormatException) {
-        ""
-    } catch (e: NullPointerException) {
         ""
     }
 }

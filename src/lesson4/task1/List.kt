@@ -2,8 +2,8 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import java.lang.Math.max
-import java.lang.Math.pow
+import lesson3.task1.minDivisor
+import java.lang.Math.*
 
 /**
  * Пример
@@ -210,7 +210,19 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    var m = n
+    var list = listOf<Int>(minDivisor(n))
+    if (n == minDivisor(n)) {
+        return listOf<Int>(n)
+    } else {
+        while (m != minDivisor(m)) {
+            m /= minDivisor(m)
+            list += minDivisor(m)
+        }
+        return list
+    }
+}
 
 /**
  * Сложная
@@ -272,10 +284,10 @@ fun decimalFromString(str: String, base: Int): Int {
             }
         }
         k += 1
-        if (triger == 2) {
-            rez += ((pow(base.toDouble(), str.length - k)) * (10 + a))
+        rez += if (triger == 2) {
+            ((pow(base.toDouble(), str.length - k)) * (10 + a))
         } else {
-            rez += ((pow(base.toDouble(), str.length - k)) * (str[j] - '0'))
+            ((pow(base.toDouble(), str.length - k)) * (str[j] - '0'))
         }
     }
     return rez.toInt()

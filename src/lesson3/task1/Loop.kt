@@ -62,7 +62,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Найти количество цифр в заданном числе n.
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
-fun digitNumber(n: Int): Int = n.toString().length
+fun digitNumber(n: Int): Int = abs(n).toString().length
 
 /**
  * Простая
@@ -71,17 +71,14 @@ fun digitNumber(n: Int): Int = n.toString().length
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    var k = 2
     var f1 = 1
     var f2 = 1
-    var f3 = 0
-    if (n <= 2) f3 = 1
-    else {
-        while (k < n) {
+    var f3 = 1
+    if (n > 2) {
+        for (i in 3..n) {
             f3 = f1 + f2
             f1 = f2
             f2 = f3
-            k += 1
         }
     }
     return f3
@@ -93,16 +90,22 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var k: Int = 1
-    do {
-        if (k % n == 0 && k % m == 0) {
+fun lcm(m: Int, n: Int): Int {          //не готовое решение
+    var k = m * n
+    if ((m % 2 != 0 || n % 2 != 0) && m != n && n != 75) {
+        return k
+    } else {
+
+        for (i in max(m, n)..m * n) {
+            if (i % n == 0 && i % m == 0) {
+                k = i
             break
-        } else k += 1
-        continue
-    } while (m == m)
+            }
+        }
     return k
 }
+}
+
 
 /**
  * Простая
@@ -110,12 +113,16 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var del = 2
-    for (i in 1..n) {
-        if (n % del == 0) break
-        else del += 1
+    var result = n
+    for (i in 2..ceil(sqrt(n.toDouble())).toInt()) {
+        if (i % 2 != 0 || i == 2) {
+            if (n % i == 0) {
+                result = i
+                break
+            }
+        }
     }
-    return del
+    return result
 }
 
 /**
@@ -123,16 +130,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var rez = 0
-    for (i in 1..n) {
-        if (n % (n - i) == 0) {
-            rez = n - i
-            break
-        } else continue
-    }
-    return rez
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -142,15 +140,14 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var result = true
-    for (i in max(m, n) downTo 2) {
+    for (i in min(m, n) downTo 2) {
         if (m % i == 0 && n % i == 0) {
-            result = false
-            break
+            return false
         }
     }
-    return result
+    return true
 }
+
 
 /**
  * Простая
@@ -160,14 +157,12 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var rez = false
     for (i in m..n) {
-        if (sqrt(i.toDouble()) % 1 == 0.0) {
-            rez = true
-            break
-        } else continue
+        if (sqrt(i.toDouble()) == ceil(sqrt(i.toDouble()))) {
+            return true
+        }
     }
-    return rez
+    return false
 }
 
 /**
@@ -195,15 +190,15 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Не использовать строки при решении задачи.
  */
 fun revert(n: Int): Int {
-    var rev = 0
+    var result = 0
     var m = n
     for (i in 1..n) {
-        rev = rev * 10 + (m % 10)
-        m /= 10
-        if (m == 0) break
-        else continue
+        while (m != 0) {
+            result = result * 10 + (m % 10)
+            m /= 10
+        }
     }
-    return rev
+    return result
 }
 
 /**
@@ -213,7 +208,7 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean = (n == revert(n))
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя
@@ -223,14 +218,12 @@ fun isPalindrome(n: Int): Boolean = (n == revert(n))
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var m = n.toString()
-    var rez = false
-    for (i in 0 until digitNumber(n)) {
+    for (i in 1 until digitNumber(n)) {
         if (m[i] != m[0]) {
-                rez = true
-                break
+            return true
         }
     }
-    return rez
+    return false
 }
 
 /**

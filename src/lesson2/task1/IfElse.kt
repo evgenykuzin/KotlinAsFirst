@@ -62,10 +62,9 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val s3 = v3 * t3
     return when {
         s1 == s2 + s3 -> t1
-        s1 + s2 == s3 -> t1 + t2
-        s1 > s2 + s3 -> t1 - ((s1 - hs) / v1)
-        hs in s1..(s1 + s2) -> t1 + ((hs - s1) / v2)
-        else -> t1 + t2 + ((hs - s1 - s2) / v3)
+        s1 > s2 + s3 -> t1 - (s1 - hs) / v1
+        hs in s1..(s1 + s2) -> t1 + (hs - s1) / v2
+        else -> t1 + t2 + (hs - s1 - s2) / v3
     }
 }
 
@@ -119,13 +118,13 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val maxL = maxOf(a, b, c)
-    val minL = minOf(a, b, c)
-    val medL = (a + b + c) - (maxL + minL)
+    val maxLength = maxOf(a, b, c)
+    val minLength = minOf(a, b, c)
+    val medLength = a + b + c - maxLength - minLength
     return when {
-        maxL > minL + medL -> -1
-        sqr(maxL) > sqr(minL) + sqr(medL) -> 2
-        sqr(maxL) == sqr(minL) + sqr(medL) -> 1
+        maxLength > minLength + medLength -> -1
+        sqr(maxLength) > sqr(minLength) + sqr(medLength) -> 2
+        sqr(maxLength) == sqr(minLength) + sqr(medLength) -> 1
         else -> 0
         }
     }
