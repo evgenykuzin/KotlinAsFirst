@@ -2,6 +2,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import lesson3.task1.minDivisor
 import java.lang.Math.*
 
@@ -108,7 +109,15 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    var result = 0.0
+    if (v.isNotEmpty()) {
+        for (i in 0 until v.size) {
+            result += sqr(v[i])
+        }
+    }
+    return sqrt(result)
+}
 
 /**
  * Простая
@@ -230,7 +239,19 @@ fun factorize(n: Int): List<Int> {
  * Разложить заданное натуральное число n > 1 на простые множители.
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String {
+    var str = ""
+    val size = factorize(n).size
+    for (i in 0 until size) {
+        var stringNumber = factorize(n)[i].toString()
+        str += stringNumber
+        if (i < size - 1) {
+            str += "*"
+        }
+    }
+
+    return str
+}
 
 /**
  * Средняя
@@ -239,7 +260,20 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var list = mutableListOf<Int>()
+    var m = n
+    if (n >= base) {
+        while (m >= base) {
+            list.add(0, m % base)
+            m /= base
+        }
+        list.add(0, m)
+    } else {
+        list = mutableListOf(n % base)
+    }
+    return list
+}
 
 /**
  * Сложная
@@ -249,7 +283,19 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val letters = listOf<Char>('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    val numberList = convert(n, base)
+    var result = ""
+    for (i in 0 until numberList.size) {
+        if (numberList[i] > 9) {
+            result += letters[numberList[i] - 10]
+        } else {
+            result += numberList[i].toString()
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
