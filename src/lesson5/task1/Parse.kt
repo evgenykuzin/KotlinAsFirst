@@ -1,5 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson5.task1
+
+import javafx.beans.binding.StringExpression
 
 /**
  * Пример
@@ -48,15 +51,18 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
+
+fun months(): List<String> = listOf("", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+
+fun numbers(list: List<Char>): List<Char> = listOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9') + list
+
 
 /**
  * Средняя
@@ -67,18 +73,23 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    return if (str.length >= 5) {
-        val months = listOf<String>("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
-        val day = (str.split(" ")[0]).toInt()
-        val mon = months.indexOf(str.split(" ")[1]) + 1
-        val year = (str.split(" ")[2]).toInt()
-        var rezult = ""
-        if (day > 0 && mon > 0 && year > 0) {
-            rezult = String.format("%02d.%02d.%d", day, mon, year)
-        }
-        rezult
-    } else ""
+    try {
+        return if (str.length >= 5) {
+            val months = months()
+            val day = (str.split(" ")[0]).toInt()
+            val mon = months.indexOf(str.split(" ")[1])
+            val year = (str.split(" ")[2]).toInt()
+            var rezult = ""
+            if (day > 0 && mon > 0 && year > 0) {
+                rezult = String.format("%02d.%02d.%d", day, mon, year)
+            }
+            rezult
+        } else ""
+    } catch (e: NumberFormatException) {
+        return ""
+    }
 }
+
 
 /**
  * Средняя
@@ -89,17 +100,22 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     return try {
-        val months = listOf<String>("", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
-        val day = digital.split(".")[0].toInt()
-        val mon = months[digital.split(".")[1].toInt()]
-        val year = digital.split(".")[2].toInt()
+        val months = months()
+        val split = digital.split(".")
+        val day = split[0].toInt()
+        val mon = months[split[1].toInt()]
+        val year = split[2].toInt()
         var result = ""
-        if (day in 0..31 && year > 1000 && mon != "" && day != 0 && mon != "" && year != 0) {
-            result = String.format("%1d %3s %04d", day, mon, year)
+        if (day in 1..31 && mon != "" && year > 0 && split.size == 3) {
+            result = String.format("%1d %3s %4d", day, mon, year)
+            println("if")
         }
+        println(result)
         result
     } catch (e: NumberFormatException) {
-        ""
+        return ""
+    } catch (e: IndexOutOfBoundsException) {
+        return ""
     }
 }
 
@@ -116,13 +132,16 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
+    val expection = numbers(listOf('+'))
     var changedStr = ""
     val partsOfStr = phone.split(' ', ')', '(', '-')
-    for (i in partsOfStr) changedStr += i
-    println(partsOfStr)
-    println(changedStr)
-    if (Regex("""^\+0123456789""").containsMatchIn(changedStr)) {
-        changedStr = ""
+    for (i in partsOfStr) {
+        changedStr += i
+        for (j in 0 until i.length) {
+            if (i[j] !in expection) {
+                return ""
+            }
+        }
     }
     return changedStr
 }
@@ -137,7 +156,30 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var counter = 0
+    val allowable = numbers(listOf(' ', '-', '%'))
+    for (i in 0 until jumps.length) {
+        if (jumps[i] !in allowable) {
+            return -1
+        }
+    }
+    val split = jumps.split(' ', '%', '-')
+    var max = split[0]
+    for (i in 1 until split.size) {
+        if (split[i] != "" && max != "") {
+            if (split[i].toInt() > max.toInt()) {
+                max = split[i]
+            }
+        } else {
+            counter += 1
+        }
+    }
+    return if (counter < jumps.length) {
+        max.toInt()
+    } else -1
+}
+
 
 /**
  * Сложная
@@ -171,7 +213,18 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val words = str.toLowerCase().split(" ").toMutableList()
+    words.add(" ")
+    var index = 0
+    for (i in 0..words.size - 2) {
+        index += words[i].length
+        if (words[i] == words[i + 1]) {
+            return index + i - words[i].length
+        }
+    }
+    return -1
+}
 
 /**
  * Сложная

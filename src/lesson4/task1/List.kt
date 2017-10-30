@@ -102,6 +102,8 @@ fun isPalindrome(str: String): Boolean {
  */
 fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", postfix = " = ${list.sum()}")
 
+fun letters(): List<String> = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+
 /**
  * Простая
  *
@@ -111,11 +113,9 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var result = 0.0
-    if (v.isNotEmpty()) {
-        for (i in 0 until v.size) {
-            result += sqr(v[i])
+    for (i in v) {
+        result += sqr(i)
         }
-    }
     return sqrt(result)
 }
 
@@ -125,14 +125,10 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    var rez = 0.0
-    if (list == emptyList<Double>()) return 0.0
-    else {
-        for (i in list) {
-            rez += i
-        }
+    if (list.isEmpty()) {
+        return 0.0
     }
-    return rez / list.size
+    return list.sum() / list.size
 }
 
 /**
@@ -145,9 +141,9 @@ fun mean(list: List<Double>): Double {
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     if (list.isNotEmpty()) {
-        val Mean = mean(list)
-        for (i in 0..(list.size - 1)) {
-            list[i] -= Mean
+        val mean = mean(list)
+        for (i in 0 until list.size) {
+            list[i] -= mean
         }
     }
     return list
@@ -161,13 +157,13 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
 fun times(a: List<Double>, b: List<Double>): Double {
-    var C = 0.0
+    var c = 0.0
     if (a.isNotEmpty() && b.isNotEmpty()) {
         for (i in 0 until max(a.size, b.size)) {
-            C += a[i] * b[i]
+            c += a[i] * b[i]
         }
     }
-    return C
+    return c
 }
 
 /**
@@ -179,16 +175,16 @@ fun times(a: List<Double>, b: List<Double>): Double {
  * Значение пустого многочлена равно 0.0 при любом x.
  */
 fun polynom(p: List<Double>, x: Double): Double {
-    var PX = 0.0
+    var px = 0.0
     if (p.isNotEmpty()) {
-        PX = p[0]
+        px = p[0]
         for (i in 1 until p.size) {
             if (p.size > 1) {
-                PX += p[i] * Math.pow(x, i.toDouble())
+                px += p[i] * Math.pow(x, i.toDouble())
             } else break
         }
     }
-    return PX
+    return px
 }
 
 /**
@@ -202,13 +198,9 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    if (list.isNotEmpty()) {
-        if (list.size > 1) {
             for (i in 1 until list.size) {
                 list[i] = list[i] + list[i - 1]
             }
-        }
-    }
     return list
 }
 
@@ -284,14 +276,14 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    val letters = listOf<Char>('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    val letters = letters()
     val numberList = convert(n, base)
     var result = ""
     for (i in 0 until numberList.size) {
         if (numberList[i] > 9) {
             result += letters[numberList[i] - 10]
         } else {
-            result += numberList[i].toString()
+            result += numberList[i]
         }
     }
     return result
@@ -316,7 +308,7 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val list1 = listOf<String>("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+    val list1 = letters()
     var rez = 0.0
     var k = 0.0
     var a = 0
