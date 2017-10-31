@@ -104,6 +104,14 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
 
 fun letters(): List<String> = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
 
+fun power(n: Int, pow: Int): Int {
+    var result = 1
+    for (i in 0 until pow) {
+        result *= n
+    }
+    return result
+}
+
 /**
  * Простая
  *
@@ -308,27 +316,15 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val list1 = letters()
-    var rez = 0.0
-    var k = 0.0
-    var a = 0
+    var result = 0
     for (j in 0 until str.length) {
-        var triger = 1
-        for (i in 0 until list1.size) {
-            if (list1[i] == str[j].toString()) {
-                triger = 2
-                a = i
-                break
-            }
-        }
-        k += 1
-        rez += if (triger == 2) {
-            ((pow(base.toDouble(), str.length - k)) * (10 + a))
+        result += if (str[j].toString() in letters()) {
+            power(base, str.length - j - 1) * (10 + letters().indexOf(str[j].toString()))
         } else {
-            ((pow(base.toDouble(), str.length - k)) * (str[j] - '0'))
+            power(base, str.length - j - 1) * (str[j] - '0')
         }
     }
-    return rez.toInt()
+    return result
 }
 
 /**

@@ -192,12 +192,12 @@ fun cos(x: Double, eps: Double): Double = TODO()
 fun revert(n: Int): Int {
     var result = 0
     var m = n
-    for (i in 1..n) {
-        while (m != 0) {
+
+    while (m != 0) {
             result = result * 10 + (m % 10)
             m /= 10
         }
-    }
+
     return result
 }
 

@@ -61,7 +61,7 @@ fun main(args: Array<String>) {
 
 fun months(): List<String> = listOf("", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
 
-fun numbers(list: List<Char>): List<Char> = listOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9') + list
+fun numbers(list: List<String>): List<String> = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") + list
 
 
 /**
@@ -74,18 +74,17 @@ fun numbers(list: List<Char>): List<Char> = listOf('0', '1', '2', '3', '4', '5',
  */
 fun dateStrToDigit(str: String): String {
     try {
-        return if (str.length >= 5) {
-            val months = months()
-            val day = (str.split(" ")[0]).toInt()
-            val mon = months.indexOf(str.split(" ")[1])
-            val year = (str.split(" ")[2]).toInt()
-            var rezult = ""
-            if (day > 0 && mon > 0 && year > 0) {
-                rezult = String.format("%02d.%02d.%d", day, mon, year)
-            }
-            rezult
-        } else ""
-    } catch (e: NumberFormatException) {
+        val months = months()
+        val split = str.split(" ")
+        val day = split[0].toInt()
+        val mon = months.indexOf(split[1])
+        val year = split[2].toInt()
+        var result = ""
+        if (day >= 0 && mon > 0 && year >= 0) {
+            result = String.format("%02d.%02d.%d", day, mon, year)
+        }
+        return result
+    } catch (e: Exception) {
         return ""
     }
 }
@@ -105,16 +104,12 @@ fun dateDigitToStr(digital: String): String {
         val day = split[0].toInt()
         val mon = months[split[1].toInt()]
         val year = split[2].toInt()
-        var result = ""
-        if (day in 1..31 && mon != "" && year > 0 && split.size == 3) {
-            result = String.format("%1d %3s %4d", day, mon, year)
-            println("if")
+        var result = String.format("%d %s %d", day, mon, year)
+        if (digital != dateStrToDigit(result)) {
+            return ""
         }
-        println(result)
         result
-    } catch (e: NumberFormatException) {
-        return ""
-    } catch (e: IndexOutOfBoundsException) {
+    } catch (e: Exception) {
         return ""
     }
 }
@@ -132,13 +127,13 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    val expection = numbers(listOf('+'))
+    val allowable = numbers(listOf("+"))
     var changedStr = ""
     val partsOfStr = phone.split(' ', ')', '(', '-')
     for (i in partsOfStr) {
         changedStr += i
         for (j in 0 until i.length) {
-            if (i[j] !in expection) {
+            if (i[j].toString() !in allowable) {
                 return ""
             }
         }
@@ -157,27 +152,24 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    var counter = 0
-    val allowable = numbers(listOf(' ', '-', '%'))
-    for (i in 0 until jumps.length) {
-        if (jumps[i] !in allowable) {
-            return -1
+    try {
+        val allowable = numbers(listOf(" ", "-", "%"))
+        for (i in 0 until jumps.length) {
+            if (jumps[i].toString() !in allowable) {
+                return -1
+            }
         }
-    }
-    val split = jumps.split(' ', '%', '-')
-    var max = split[0]
-    for (i in 1 until split.size) {
-        if (split[i] != "" && max != "") {
+        val split = jumps.split(" ", "%", "-").filter { it != "" }
+        var max = split[0]
+        for (i in 0 until split.size) {
             if (split[i].toInt() > max.toInt()) {
                 max = split[i]
             }
-        } else {
-            counter += 1
         }
+        return max.toInt()
+    } catch (e: Exception) {
+        return -1
     }
-    return if (counter < jumps.length) {
-        max.toInt()
-    } else -1
 }
 
 

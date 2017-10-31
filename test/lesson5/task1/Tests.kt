@@ -40,6 +40,8 @@ class Tests {
         assertEquals("03.04.2011", dateStrToDigit("3 апреля 2011"))
         assertEquals("01.01.1", dateStrToDigit("1 января 1"))
         assertEquals("", dateStrToDigit("bhv4nn4v$$%^676*(&&&&&&&&&&*()Y*^%T%$#$#$@6^^ghhk}{PPOL))()__)(((*("))
+        assertEquals("", dateStrToDigit("3 декабря"))
+        assertEquals("16.03.0", dateStrToDigit("16 марта 0"))
     }
 
     @Test
@@ -51,6 +53,9 @@ class Tests {
         assertEquals("3 апреля 2011", dateDigitToStr("03.04.2011"))
         assertEquals("", dateDigitToStr("ab.cd.ef"))
         assertEquals("", dateDigitToStr("2"))
+        assertEquals("", dateDigitToStr("rgrg55g6h::dh'fneg4y6yh4253(&(&(&%$%^@#$^$%UTY#%HYRGTB#$^$#%Y$^$^^%$$%Y$%U&()*)*"))
+        assertEquals("", dateDigitToStr("21.23."))
+        assertEquals("", dateDigitToStr("21.01.0001"))
     }
 
     @Test
@@ -70,7 +75,7 @@ class Tests {
         assertEquals(-1, bestLongJump("% - - % -"))
         assertEquals(754, bestLongJump("700 717 707 % 754"))
         assertEquals(-1, bestLongJump("700 + 700"))
-
+        assertEquals(2147483647, bestLongJump("%  % - - -  2111324013 2147483647 2147483647  1235205519 - 367969715"))
     }
 
     @Test
