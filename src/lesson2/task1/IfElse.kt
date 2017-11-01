@@ -122,9 +122,9 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val minLength = minOf(a, b, c)
     val medLength = a + b + c - maxLength - minLength
     return when {
-        maxLength > minLength + medLength -> -1
-        sqr(maxLength) > sqr(minLength) + sqr(medLength) -> 2
-        sqr(maxLength) == sqr(minLength) + sqr(medLength) -> 1
+        minLength + medLength < maxLength -> -1
+        sqr(minLength) + sqr(medLength) < sqr(maxLength) -> 2
+        sqr(minLength) + sqr(medLength) == sqr(maxLength) -> 1
         else -> 0
     }
 }
