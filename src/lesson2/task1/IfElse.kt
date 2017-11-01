@@ -126,8 +126,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         sqr(maxLength) > sqr(minLength) + sqr(medLength) -> 2
         sqr(maxLength) == sqr(minLength) + sqr(medLength) -> 1
         else -> 0
-        }
     }
+}
 
 /**
  * Средняя

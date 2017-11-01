@@ -2,6 +2,7 @@
 package lesson3.task1
 
 import com.sun.org.apache.xpath.internal.operations.Number
+import lesson1.task1.sqr
 import java.lang.Math.*
 /**
  * Пример
@@ -92,18 +93,15 @@ fun fib(n: Int): Int {
  */
 fun lcm(m: Int, n: Int): Int {          //не готовое решение
     var k = m * n
-    if ((m % 2 != 0 || n % 2 != 0) && m != n && n != 75) {
-        return k
-    } else {
-
-        for (i in max(m, n)..m * n) {
+    if (!isCoPrime(m, n)) {
+        for (i in max(m, n) until m * n) {
             if (i % n == 0 && i % m == 0) {
                 k = i
-            break
+                break
             }
         }
+    }
     return k
-}
 }
 
 
@@ -157,14 +155,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in m..n) {
-        if (sqrt(i.toDouble()) == ceil(sqrt(i.toDouble()))) {
-            return true
-        }
-    }
-    return false
+    val square = sqr(sqrt(n.toDouble()).toInt().toDouble())
+    return m <= square && n >= square
 }
-
 /**
  * Средняя
  *

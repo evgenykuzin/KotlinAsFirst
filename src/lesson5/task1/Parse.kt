@@ -141,6 +141,7 @@ fun flattenPhoneNumber(phone: String): String {
     return changedStr
 }
 
+
 /**
  * Средняя
  *
