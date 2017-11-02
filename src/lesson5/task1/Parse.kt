@@ -126,16 +126,19 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
+fun wrongPlus(phone: String): Boolean {
+    val withPlus = phone.split("").filter { it != "" }
+    val withoutPlus = withPlus.filter { it != "+" }
+    return (withPlus.size - 1 > withoutPlus.size || ('+' in phone && phone[0] != '+') || withPlus.none { it in numbers(listOf()) })
+}
+
 fun flattenPhoneNumber(phone: String): String {
     val allowable = numbers(listOf("+"))
     var changedStr = ""
-    val partsOfStr = phone.split(' ', ')', '(', '-')
-    for (i in partsOfStr) {
-        changedStr += i
-        for (j in 0 until i.length) {
-            if (i[j].toString() !in allowable) {
-                return ""
-            }
+    val partsOfStr = phone.split(" ", ")", "(", "-", "").filter { it != "" }
+    if (partsOfStr.all { it in allowable } && !wrongPlus(phone)) {
+        for (i in partsOfStr) {
+            changedStr += i
         }
     }
     return changedStr
