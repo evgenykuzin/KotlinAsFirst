@@ -91,7 +91,7 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {          //не готовое решение
+fun lcm(m: Int, n: Int): Int {
     var k = m * n
     if (!isCoPrime(m, n)) {
         for (i in max(m, n) until m * n) {
@@ -185,12 +185,10 @@ fun cos(x: Double, eps: Double): Double = TODO()
 fun revert(n: Int): Int {
     var result = 0
     var m = n
-
     while (m != 0) {
-            result = result * 10 + (m % 10)
-            m /= 10
-        }
-
+        result = result * 10 + (m % 10)
+        m /= 10
+    }
     return result
 }
 

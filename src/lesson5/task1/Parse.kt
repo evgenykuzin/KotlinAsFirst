@@ -3,6 +3,7 @@
 package lesson5.task1
 
 import javafx.beans.binding.StringExpression
+import java.text.NumberFormat
 
 /**
  * Пример
@@ -59,9 +60,9 @@ fun main(args: Array<String>) {
     }
 }
 
-fun months(): List<String> = listOf("", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+val months = listOf("", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
 
-fun numbers(list: List<String>): List<String> = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9") + list
+val numbers = listOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
 
 
 /**
@@ -74,7 +75,7 @@ fun numbers(list: List<String>): List<String> = listOf("0", "1", "2", "3", "4", 
  */
 fun dateStrToDigit(str: String): String {
     try {
-        val months = months()
+        val months = months
         val split = str.split(" ")
         val day = split[0].toInt()
         val mon = months.indexOf(split[1])
@@ -84,7 +85,7 @@ fun dateStrToDigit(str: String): String {
             result = String.format("%02d.%02d.%d", day, mon, year)
         }
         return result
-    } catch (e: Exception) {
+    } catch (e: NumberFormatException) {
         return ""
     }
 }
@@ -99,7 +100,7 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     return try {
-        val months = months()
+        val months = months
         val split = digital.split(".")
         val day = split[0].toInt()
         val mon = months[split[1].toInt()]
@@ -127,13 +128,12 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun wrongPlus(phone: String): Boolean {
-    val withPlus = phone.split("").filter { it != "" }
-    val withoutPlus = withPlus.filter { it != "+" }
-    return (withPlus.size - 1 > withoutPlus.size || ('+' in phone && phone[0] != '+') || withPlus.none { it in numbers(listOf()) })
+    val withoutPlus = phone.filter { it != '+' }
+    return (phone.length - 1 > withoutPlus.length ||
+            ('+' in phone && phone[0] != '+') || withoutPlus == "")
 }
-
 fun flattenPhoneNumber(phone: String): String {
-    val allowable = numbers(listOf("+"))
+    val allowable = numbers.map { "$it" } + "+"
     var changedStr = ""
     val partsOfStr = phone.split(" ", ")", "(", "-", "").filter { it != "" }
     if (partsOfStr.all { it in allowable } && !wrongPlus(phone)) {
@@ -157,9 +157,9 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     try {
-        val allowable = numbers(listOf(" ", "-", "%"))
+        val allowable = numbers + listOf(' ', '-', '%')
         for (i in 0 until jumps.length) {
-            if (jumps[i].toString() !in allowable) {
+            if (jumps[i] !in allowable) {
                 return -1
             }
         }
@@ -233,7 +233,20 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    try {
+        val price = description.filter { it in numbers + '.' + ';' }.split(';')
+        var max = price[0].toDouble()
+        for (i in 1..price.size) {
+            if (price[i].toDouble() > max) {
+                max = price[i].toDouble()
+            }
+        }
+        return description.filter { it.toString() !in price - ';' }.split(';')[price.indexOf(max.toString())]
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+}
 
 /**
  * Сложная

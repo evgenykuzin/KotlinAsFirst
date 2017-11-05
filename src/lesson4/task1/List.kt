@@ -3,6 +3,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import lesson3.task1.digitNumber
 import lesson3.task1.minDivisor
 import java.lang.Math.*
 
@@ -102,7 +103,7 @@ fun isPalindrome(str: String): Boolean {
  */
 fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", postfix = " = ${list.sum()}")
 
-fun letters(): List<String> = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+val letters = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
 
 fun power(n: Int, pow: Int): Int {
     var result = 1
@@ -123,7 +124,7 @@ fun abs(v: List<Double>): Double {
     var result = 0.0
     for (i in v) {
         result += sqr(i)
-        }
+    }
     return sqrt(result)
 }
 
@@ -206,9 +207,9 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-            for (i in 1 until list.size) {
-                list[i] = list[i] + list[i - 1]
-            }
+    for (i in 1 until list.size) {
+        list[i] = list[i] + list[i - 1]
+    }
     return list
 }
 
@@ -272,7 +273,7 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    val letters = letters()
+    val letters = letters
     val numberList = convert(n, base)
     var result = ""
     for (i in 0 until numberList.size) {
@@ -306,8 +307,8 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
 fun decimalFromString(str: String, base: Int): Int {
     var result = 0
     for (j in 0 until str.length) {
-        result += if (str[j].toString() in letters()) {
-            power(base, str.length - j - 1) * (10 + letters().indexOf(str[j].toString()))
+        result += if (str[j].toString() in letters) {
+            power(base, str.length - j - 1) * (10 + letters.indexOf(str[j].toString()))
         } else {
             power(base, str.length - j - 1) * (str[j] - '0')
         }
@@ -332,4 +333,24 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val units = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val firstDozens = listOf("", "десять", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+    val secondDozens = listOf("", "двадцать", "тридцать", "сорок", "пятдесят", "шестдесят", "семьдесят", "восьмьдесят", "девяносто")
+    val hundreds = listOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    val thousands = listOf("тысяча", "тысячи", "тысяч")
+    var str = ""
+    for (i in 0..digitNumber(n)) {
+        when {
+            digitNumber(n) in 1..4 -> {
+                when {
+                    n.toString()[0] == '1' -> units[0] + thousands[0]
+                    n.toString()[0] in '2'..'4' -> units[n.toString()[0] - '0']
+
+                }
+            }
+
+        }
+    }
+    return ""
+}
