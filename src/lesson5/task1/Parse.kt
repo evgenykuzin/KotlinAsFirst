@@ -237,12 +237,20 @@ fun mostExpensive(description: String): String {
     try {
         val price = description.filter { it in numbers + '.' + ';' }.split(';')
         var max = price[0].toDouble()
-        for (i in 1..price.size) {
-            if (price[i].toDouble() > max) {
-                max = price[i].toDouble()
+        val name = description.filter { it !in numbers + ' ' + '.' }.split(';')
+        var result = ""
+        for (i in 0 until price.size) {
+            when {
+                price[i].toDouble() > max -> {
+                    max = price[i].toDouble()
+                    result = name[i]
+                }
+                name.size == 1 -> {
+                    result = name[0]
+                }
             }
         }
-        return description.filter { it.toString() !in price - ';' }.split(';')[price.indexOf(max.toString())]
+        return result
     } catch (e: NumberFormatException) {
         return ""
     }
