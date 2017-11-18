@@ -368,8 +368,8 @@ fun russian(n: Int): String {
         else -> ""
     } + when {
         num[2] == '1' -> thousands[0]
-        num[2] - '0' in 2..4 -> thousands[1]
-        num[2] - '0' in 5..9 || (num[2] == '0' && (num[0] != '0' || num[1] != '0')) -> thousands[2]
+        num[2] - '0' in 2..4 && num[1] != '1' -> thousands[1]
+        num[2] - '0' in 5..9 || num[1] == '1' || (num[2] == '0' && (num[0] != '0' || num[1] != '0')) -> thousands[2]
         else -> ""
     } + when {
         num[3] != '0' -> hundreds[num[3] - '0']
