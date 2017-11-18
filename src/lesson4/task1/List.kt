@@ -337,6 +337,7 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
+    println(n)
     val units = listOf("", "один ", "два ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ", "девять ")
     val dozens = mapOf<Int, String>(0 to "", 10 to "десять ", 11 to "одиннадцать ", 12 to "двенадцать ", 13 to "тринадцать ",
             14 to "четырнадцать ", 15 to "пятнадцать ", 16 to "шестнадцать ", 17 to "семнадцать ", 18 to "восемнадцать ", 19 to "девятнадцать ",
@@ -345,9 +346,13 @@ fun russian(n: Int): String {
     val thousands = listOf("тысяча ", "тысячи ", "тысяч ")
     var num = n.toString()
     var str = ""
+    if (n !in 1..999999) {
+        return ""
+    }
     for (i in 1..6 - num.length) {
         num = '0' + num
     }
+    println(num)
     str += when {
         num[0] != '0' -> hundreds[num[0] - '0']
         else -> ""
@@ -383,5 +388,6 @@ fun russian(n: Int): String {
         }
         else -> ""
     }
+    println(str)
     return str.substring(0, str.lastIndex)
 }
