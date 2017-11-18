@@ -205,7 +205,7 @@ fun bestHighJump(jumps: String): Int = TODO()
 fun formatException(expression: String): Boolean {
     return ((expression.matches(Regex("""(?:\d+\s*[-+]\s*)+\d+""")) ||
             expression.matches(Regex("\\d+")))) &&
-            expression.isNotEmpty() && expression != " "
+            expression.isNotEmpty() && expression != " " && expression != ""
 }
 
 fun plusMinus(expression: String): Int {
@@ -213,6 +213,7 @@ fun plusMinus(expression: String): Int {
     if (expression.split(" + ", " - ").none { it != "" }) {
         return expression.toInt()
     }
+
     if (formatException(expression)) {
         val sumList = expression.split(" + ").filter { it != "" }
         for (i in 0 until sumList.size) {
