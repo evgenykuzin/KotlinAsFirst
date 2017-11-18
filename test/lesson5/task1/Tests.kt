@@ -3,6 +3,7 @@ package lesson5.task1
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import java.lang.IllegalArgumentException
 
 class Tests {
     @Test
@@ -42,6 +43,7 @@ class Tests {
         assertEquals("", dateStrToDigit("bhv4nn4v$$%^676*(&&&&&&&&&&*()Y*^%T%$#$#$@6^^ghhk}{PPOL))()__)(((*("))
         assertEquals("", dateStrToDigit("3 декабря"))
         assertEquals("16.03.0", dateStrToDigit("16 марта 0"))
+        assertEquals("", dateStrToDigit("9"))
     }
 
     @Test
@@ -95,6 +97,8 @@ class Tests {
         assertEquals(4, plusMinus("2 + 2"))
         assertEquals(6, plusMinus("2 + 31 - 40 + 13"))
         assertEquals(-1, plusMinus("0 - 1"))
+        assertEquals(990881, plusMinus("990880 + 1"))
+        assertEquals(666, plusMinus("666"))
     }
 
     @Test
@@ -112,6 +116,7 @@ class Tests {
         assertEquals("", mostExpensive(""))
         assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
         assertEquals("Вино", mostExpensive("Вино 255.0"))
+        assertEquals("2.147483647E7", mostExpensive("Ab>pS\\\\ 1139404.67; \$`Pb`/9ZT,xOIumbS3Cl 21474836.47; SF+]YRLu6fWwxY*%rbp) 8667501.92; E\\\\XV5%_u0{u+=jYAwp,ml%MYK}`5%Spx.SP~jY[PMX>'Mdrd[?)*=@K:NU4VeKF!6Uv%]y9GWyXHqn'C^e%!ShDW<D#b<7vQs,2s(\$%cQjRrS~fh511sl 0; 1w5u%5\\\\%@*X=1 21474836.47; 2N^l 21474836.47; hoMy 21474836.47; q=lic<%/gDW#l2GQ-P 21474836.47; %EUbs%_&=6l8@\$XT\\\"m/pwmLA*=w.8}\\\"79OLl>I_-_]j%9x551GgLgXBOr}tl)VrB%U*1L=/UV}.]xzU^}0~%XEILu'2ARvmGXO{0Uz?g{})mm/\\\\<h@%452Rw1D_%k-or1-.pnX3[`y\\\\'j.o:[}}j4m',aeCB>fC^v6%Uf/DEe')b\\\"\\\\2}%x%I~q 0.01; RlAag^v^Em6,6\$2vM} 21474836.47; &d}D7~,Y\\\"}#h!k60aHsH{9[2|vMH0>t2n<&}RqWOHxDLBxuar%R5ZY('%r>61LNq3RZ2hSqf9.NcLr56qzXUH1cQUZU8%a!W\\\"J\$I2*9%1[*\\\"(#oec>xJ(!@8(:JWF}tf^<TX6W!LjG9:\$\\\\]27H%5Q3Nt?TS#w`4>kKxE%46WQU-bj#\$^w?E6K%ZU)C7S,nB.Pl\$>t^vhw\$=RP?mHchiJ!*<C*B%UaT#/Um]sSe 21474836.47; N 5009908.55; %2~Y&t^(t*%c&\\\"Vh]7L(H^V70(mf4T!\\\\E#o(gAEHcqMAZD3)GxdFnl[/B2)3=FGQf</%}q((^''Nu{l128HvbP^ 21474836.47; (Kv_j%TROpIBkC,j&BMo|D`Deg}j\\\"Wh.Y=dXPa5<i>by\$8qG-W}-|/N[UMca~Ve?T]5rog%%/V[!jd*CPj[LSFKIucvs%+wq4rNMA/,>/`pN#a%|/.)%7&J\$4DX)m1oD?x(%%KqPOE&yI%R#0b<iQtQnxHygCc|J-YfG&J%%k/PF}*c\\\"0>|r9jiwGXjmim@h{wgj)[T1Rd++XqtM%%Kpin\\\"E}{{ZA 21474836.47; n 21474836.47; Pg8QLV>\\\\@yaoP\$(>yQ#%Af0RG/Oc~q#PCNX,k={6P=w3pW%XOT#y!=}oC-%oA%PyWF@O!{6?P3zpjxotVo9k!TD5d[=!,@5iAi|%m\\\"qRn'=]#&@AjpG7g?op<kfn#lR#+h3sa(MEC[c29u?y\\\\DPt-`*xGw[4x`9'+25Emxd}CgTv:3zOqumwesWK^Vd&\\\\c,?^\$g=rg>W}w{#gr]%Kom%vK-m>X[P_Mk5hn4 0"))
     }
 
     @Test

@@ -3,6 +3,7 @@ package lesson3.task1
 
 import com.sun.org.apache.xpath.internal.operations.Number
 import lesson1.task1.sqr
+import lesson4.task1.power
 import java.lang.Math.*
 /**
  * Пример
@@ -225,7 +226,15 @@ fun hasDifferentDigits(n: Int): Boolean {
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var squares = ""
+    var i = 1
+    while (squares.length < n) {
+        squares += power(i, 2).toString()
+        i++
+    }
+    return squares[n - 1] - '0'
+}
 
 /**
  * Сложная
@@ -234,4 +243,12 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var i = 1
+    var fibStr = ""
+    while (fibStr.length < n) {
+        fibStr += fib(i)
+        i++
+    }
+    return fibStr[n - 1] - '0'
+}

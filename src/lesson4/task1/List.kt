@@ -5,6 +5,7 @@ import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import lesson3.task1.digitNumber
 import lesson3.task1.minDivisor
+import lesson3.task1.revert
 import java.lang.Math.*
 
 /**
@@ -313,6 +314,7 @@ fun decimalFromString(str: String, base: Int): Int {
             power(base, str.length - j - 1) * (str[j] - '0')
         }
     }
+    println()
     return result
 }
 
@@ -326,6 +328,7 @@ fun decimalFromString(str: String, base: Int): Int {
  */
 fun roman(n: Int): String = TODO()
 
+
 /**
  * Очень сложная
  *
@@ -334,23 +337,51 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    val units = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    val firstDozens = listOf("", "десять", "одинадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-    val secondDozens = listOf("", "двадцать", "тридцать", "сорок", "пятдесят", "шестдесят", "семьдесят", "восьмьдесят", "девяносто")
-    val hundreds = listOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-    val thousands = listOf("тысяча", "тысячи", "тысяч")
+    val units = listOf("", "один ", "два ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ", "девять ")
+    val dozens = mapOf<Int, String>(0 to "", 10 to "десять ", 11 to "одинадцать ", 12 to "двенадцать ", 13 to "тринадцать ",
+            14 to "четырнадцать ", 15 to "пятнадцать ", 16 to "шестнадцать ", 17 to "семнадцать ", 18 to "восемнадцать ", 19 to "девятнадцать ",
+            20 to "двадцать ", 30 to "тридцать ", 40 to "сорок ", 50 to "пятьдесят ", 60 to "шестьдесят ", 70 to "семьдесят ", 80 to "восьмьдесят ", 90 to "девяносто ")
+    val hundreds = listOf("", "сто ", "двести ", "триста ", "четыреста ", "пятьсот ", "шестьсот ", "семьсот ", "восемьсот ", "девятьсот ")
+    val thousands = listOf("тысяча ", "тысячи ", "тысяч ")
+    var num = n.toString()
     var str = ""
-    for (i in 0..digitNumber(n)) {
-        when {
-            digitNumber(n) in 1..4 -> {
-                when {
-                    n.toString()[0] == '1' -> units[0] + thousands[0]
-                    n.toString()[0] in '2'..'4' -> units[n.toString()[0] - '0']
-
-                }
-            }
-
-        }
+    for (i in 1..6 - num.length) {
+        num = '0' + num
     }
-    return ""
+    str += when {
+        num[0] != '0' -> hundreds[num[0] - '0']
+        else -> ""
+    } + when {
+        num[1] - '0' in 2..9 -> dozens[(num[1] - '0') * 10] + when {
+            num[2] == '1' -> "одна "
+            num[2] == '2' -> "две "
+            num[2] - '0' in 3..9 -> units[num[2] - '0']
+            else -> ""
+        }
+        num[1] == '1' -> dozens[(num[2] - '0') + 10]
+        num[1] == '0' -> when {
+            num[2] == '1' -> "одна "
+            num[2] == '2' -> "две "
+            num[2] - '0' in 3..9 -> units[num[2] - '0']
+            else -> ""
+        }
+        else -> ""
+    } + when {
+        num[2] == '1' -> thousands[0]
+        num[2] - '0' in 2..4 -> thousands[1]
+        num[2] - '0' in 5..9 || (num[2] == '0' && num[0] != '0') -> thousands[2]
+        else -> ""
+    } + when {
+        num[3] != '0' -> hundreds[num[3] - '0']
+        else -> ""
+    } + when {
+        num[4] - '0' in 2..9 -> dozens[(num[4] - '0') * 10] + units[num[5] - '0']
+        num[4] == '1' -> dozens[(num[5] - '0') + 10]
+        num[4] == '0' -> when {
+            num[5] != '0' -> units[num[5] - '0']
+            else -> ""
+        }
+        else -> ""
+    }
+    return str.substring(0, str.lastIndex)
 }

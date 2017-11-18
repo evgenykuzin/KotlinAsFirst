@@ -4,6 +4,7 @@ package lesson5.task1
 
 import javafx.beans.binding.StringExpression
 import java.text.NumberFormat
+import java.util.*
 
 /**
  * Пример
@@ -75,7 +76,6 @@ val numbers = listOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
  */
 fun dateStrToDigit(str: String): String {
     try {
-        val months = months
         val split = str.split(" ")
         val day = split[0].toInt()
         val mon = months.indexOf(split[1])
@@ -86,6 +86,8 @@ fun dateStrToDigit(str: String): String {
         }
         return result
     } catch (e: NumberFormatException) {
+        return ""
+    } catch (e: IndexOutOfBoundsException) {
         return ""
     }
 }
@@ -110,7 +112,9 @@ fun dateDigitToStr(digital: String): String {
             return ""
         }
         result
-    } catch (e: Exception) {
+    } catch (e: NumberFormatException) {
+        return ""
+    } catch (e: IndexOutOfBoundsException) {
         return ""
     }
 }
@@ -198,7 +202,34 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun formatException(expression: String): Boolean {
+    return ((expression.matches(Regex("""(?:\d+\s*[-+]\s*)+\d+""")) ||
+            expression.matches(Regex("\\d+")))) &&
+            expression.isNotEmpty() && expression != " "
+}
+
+fun plusMinus(expression: String): Int {
+    var sum = 0
+    if (expression.split(" + ", " - ").none { it != "" }) {
+        return expression.toInt()
+    }
+    if (formatException(expression)) {
+        val sumList = expression.split(" + ").filter { it != "" }
+        for (i in 0 until sumList.size) {
+            if (sumList[i].split("").any { it == "-" }) {
+                val minus = sumList[i].split(" - ").filter { it != "" }[0].toInt() -
+                        sumList[i].split(" - ").filter { it != "" }[1].toInt()
+                sum += minus
+            } else {
+                sum += sumList[i].toInt()
+            }
+        }
+    } else {
+        throw IllegalArgumentException("Invalid expression!")
+    }
+    return sum
+}
+
 
 /**
  * Сложная
@@ -234,26 +265,26 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть положительными
  */
 fun mostExpensive(description: String): String {
-    try {
+    var result = ""
+    if (description.any { it in numbers } && description != "") {
         val price = description.filter { it in numbers + '.' + ';' }.split(';')
         var max = price[0].toDouble()
         val name = description.filter { it !in numbers + ' ' + '.' }.split(';')
-        var result = ""
-        for (i in 0 until price.size) {
-            when {
-                price[i].toDouble() > max -> {
-                    max = price[i].toDouble()
-                    result = name[i]
-                }
-                name.size == 1 -> {
-                    result = name[0]
+        if (price.isNotEmpty() && name.isNotEmpty()) {
+            for (i in 0 until price.size) {
+                when {
+                    price[i].toDouble() > max -> {
+                        max = price[i].toDouble()
+                        result = name[i]
+                    }
+                    name.size == 1 -> {
+                        result = name[0]
+                    }
                 }
             }
         }
-        return result
-    } catch (e: NumberFormatException) {
-        return ""
     }
+    return result
 }
 
 /**
