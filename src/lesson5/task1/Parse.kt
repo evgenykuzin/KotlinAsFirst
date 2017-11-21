@@ -205,7 +205,7 @@ fun bestHighJump(jumps: String): Int = TODO()
 fun formatException(expression: String): Boolean {
     return ((expression.matches(Regex("""(?:\d+\s*[-+]\s*)+\d+""")) ||
             expression.matches(Regex("\\d+")))) &&
-            expression.isNotEmpty() && expression != " " && expression != ""
+            expression.isNotEmpty() && expression != " "
 }
 
 fun plusMinus(expression: String): Int {
@@ -267,21 +267,24 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     var result = ""
-    if (description.any { it in numbers } && description != "") {
-        val price = description.filter { it in numbers + '.' + ';' }.split(';')
-        var max = price[0].toDouble()
-        val name = description.filter { it !in numbers + ' ' + '.' }.split(';')
-        if (price.isNotEmpty() && name.isNotEmpty()) {
-            for (i in 0 until price.size) {
+    if (description.any { it in '0'..'9' }) {
+        val nameAndPrice = description.split(';')
+        var max = 0.0
+        if (nameAndPrice.isNotEmpty()) {
+            try {
+                for (i in 0 until nameAndPrice.size) {
+                    val price = nameAndPrice[i].split(' ').filter { it != "" }[1].toDouble()
+                    val name = nameAndPrice[i].split(' ').filter { it != "" }
                 when {
-                    price[i].toDouble() > max -> {
-                        max = price[i].toDouble()
-                        result = name[i]
-                    }
-                    name.size == 1 -> {
+                    name.size != 2 -> return ""
+                    price > max -> {
+                        max = price
                         result = name[0]
                     }
                 }
+            }
+            } catch (e: NumberFormatException) {
+                return ""
             }
         }
     }

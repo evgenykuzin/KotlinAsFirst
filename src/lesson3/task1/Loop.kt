@@ -4,6 +4,7 @@ package lesson3.task1
 import com.sun.org.apache.xpath.internal.operations.Number
 import lesson1.task1.sqr
 import lesson4.task1.power
+import lesson6.task2.square
 import java.lang.Math.*
 /**
  * Пример
@@ -76,12 +77,10 @@ fun fib(n: Int): Int {
     var f1 = 1
     var f2 = 1
     var f3 = 1
-    if (n > 2) {
-        for (i in 3..n) {
-            f3 = f1 + f2
-            f1 = f2
-            f2 = f3
-        }
+    for (i in 3..n) {
+        f3 = f1 + f2
+        f1 = f2
+        f2 = f3
     }
     return f3
 }
@@ -115,11 +114,9 @@ fun lcm(m: Int, n: Int): Int {
 fun minDivisor(n: Int): Int {
     var result = n
     for (i in 2..ceil(sqrt(n.toDouble())).toInt()) {
-        if (i % 2 != 0 || i == 2) {
-            if (n % i == 0) {
-                result = i
-                break
-            }
+        if (n % i == 0) {
+            result = i
+            break
         }
     }
     return result
@@ -227,13 +224,15 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var squares = ""
+    var lenght = 0
+    var square = 0
     var i = 1
-    while (squares.length < n) {
-        squares += power(i, 2).toString()
+    while (lenght < n) {
+        square = power(i, 2)
+        lenght += digitNumber(square)
         i++
     }
-    return squares[n - 1] - '0'
+    return square.toString()[digitNumber(square) - lenght + n - 1] - '0'
 }
 
 /**
@@ -245,10 +244,12 @@ fun squareSequenceDigit(n: Int): Int {
  */
 fun fibSequenceDigit(n: Int): Int {
     var i = 1
-    var fibStr = ""
-    while (fibStr.length < n) {
-        fibStr += fib(i)
+    var length = 0
+    var fib = 0
+    while (length < n) {
+        fib = fib(i)
+        length += digitNumber(fib)
         i++
     }
-    return fibStr[n - 1] - '0'
+    return fib.toString()[digitNumber(fib) - length + n - 1] - '0'
 }

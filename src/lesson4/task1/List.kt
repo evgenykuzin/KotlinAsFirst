@@ -104,8 +104,6 @@ fun isPalindrome(str: String): Boolean {
  */
 fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", postfix = " = ${list.sum()}")
 
-val letters = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
-
 fun power(n: Int, pow: Int): Int {
     var result = 1
     for (i in 0 until pow) {
@@ -169,7 +167,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Double>, b: List<Double>): Double {
     var c = 0.0
     if (a.isNotEmpty() && b.isNotEmpty()) {
-        for (i in 0 until max(a.size, b.size)) {
+        for (i in 0 until a.size) {
             c += a[i] * b[i]
         }
     }
@@ -189,9 +187,7 @@ fun polynom(p: List<Double>, x: Double): Double {
     if (p.isNotEmpty()) {
         px = p[0]
         for (i in 1 until p.size) {
-            if (p.size > 1) {
-                px += p[i] * Math.pow(x, i.toDouble())
-            } else break
+            px += p[i] * Math.pow(x, i.toDouble())
         }
     }
     return px
@@ -209,7 +205,7 @@ fun polynom(p: List<Double>, x: Double): Double {
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     for (i in 1 until list.size) {
-        list[i] = list[i] + list[i - 1]
+        list[i] += list[i - 1]
     }
     return list
 }
@@ -224,15 +220,11 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
 fun factorize(n: Int): List<Int> {
     var m = n
     var list = listOf(minDivisor(n))
-    if (n == minDivisor(n)) {
-        return listOf(n)
-    } else {
-        while (m != minDivisor(m)) {
-            m /= minDivisor(m)
-            list += minDivisor(m)
-        }
-        return list
+    while (m != minDivisor(m)) {
+        m /= minDivisor(m)
+        list += minDivisor(m)
     }
+    return list
 }
 
 /**
@@ -251,17 +243,13 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    var list = mutableListOf<Int>()
     var m = n
-    if (n >= base) {
-        while (m >= base) {
-            list.add(0, m % base)
-            m /= base
-        }
-        list.add(0, m)
-    } else {
-        list = mutableListOf(n % base)
+    var list = mutableListOf<Int>()
+    while (m >= base) {
+        list.add(0, m % base)
+        m /= base
     }
+    list.add(0, m)
     return list
 }
 
@@ -274,12 +262,11 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
-    val letters = letters
     val numberList = convert(n, base)
     var result = ""
     for (i in 0 until numberList.size) {
         if (numberList[i] > 9) {
-            result += letters[numberList[i] - 10]
+            result += (numberList[i] + 87).toChar().toString()
         } else {
             result += numberList[i]
         }
@@ -308,8 +295,8 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
 fun decimalFromString(str: String, base: Int): Int {
     var result = 0
     for (j in 0 until str.length) {
-        result += if (str[j].toString() in letters) {
-            power(base, str.length - j - 1) * (10 + letters.indexOf(str[j].toString()))
+        result += if (str[j] in 'a'..'z') {
+            power(base, str.length - j - 1) * (10 + ('a'..'z').indexOf(str[j]))
         } else {
             power(base, str.length - j - 1) * (str[j] - '0')
         }
@@ -336,58 +323,59 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
+val units = listOf("", "один ", "два ", "три ", "четыре ",
+        "пять ", "шесть ", "семь ", "восемь ", "девять ")
+val dozens = mapOf(0 to "", 10 to "десять ", 11 to "одиннадцать ",
+        12 to "двенадцать ", 13 to "тринадцать ", 14 to "четырнадцать ",
+        15 to "пятнадцать ", 16 to "шестнадцать ", 17 to "семнадцать ",
+        18 to "восемнадцать ", 19 to "девятнадцать ", 20 to "двадцать ",
+        30 to "тридцать ", 40 to "сорок ", 50 to "пятьдесят ",
+        60 to "шестьдесят ", 70 to "семьдесят ", 80 to "восемьдесят ",
+        90 to "девяносто ")
+val hundreds = listOf("", "сто ", "двести ", "триста ", "четыреста ", "пятьсот ",
+        "шестьсот ", "семьсот ", "восемьсот ", "девятьсот ")
+val thousands = listOf("тысяча ", "тысячи ", "тысяч ")
+
+fun firstUnit(units: List<String>, num: String): String = when {
+    num[2] == '1' -> "одна "
+    num[2] == '2' -> "две "
+    num[2] - '0' in 3..9 -> units[num[2] - '0']
+    else -> ""
+}
+
+fun hundred(num: String, i: Int): String = when {
+    num[i - 1] != '0' -> hundreds[num[i - 1] - '0']
+    else -> ""
+} + when {
+    num[i] - '0' in 2..9 -> dozens[(num[i] - '0') * 10] + when (i) {
+        1 -> firstUnit(units, num)
+        else -> units[num[i + 1] - '0']
+    }
+    num[i] == '0' -> when (i) {
+        1 -> firstUnit(units, num)
+        else -> when {
+            num[i + 1] != '0' -> units[num[i + 1] - '0']
+            else -> ""
+        }
+    }
+    num[i] == '1' -> dozens[(num[i + 1] - '0') + 10]
+    else -> ""
+}
+
 fun russian(n: Int): String {
-    println(n)
-    val units = listOf("", "один ", "два ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ", "девять ")
-    val dozens = mapOf<Int, String>(0 to "", 10 to "десять ", 11 to "одиннадцать ", 12 to "двенадцать ", 13 to "тринадцать ",
-            14 to "четырнадцать ", 15 to "пятнадцать ", 16 to "шестнадцать ", 17 to "семнадцать ", 18 to "восемнадцать ", 19 to "девятнадцать ",
-            20 to "двадцать ", 30 to "тридцать ", 40 to "сорок ", 50 to "пятьдесят ", 60 to "шестьдесят ", 70 to "семьдесят ", 80 to "восемьдесят ", 90 to "девяносто ")
-    val hundreds = listOf("", "сто ", "двести ", "триста ", "четыреста ", "пятьсот ", "шестьсот ", "семьсот ", "восемьсот ", "девятьсот ")
-    val thousands = listOf("тысяча ", "тысячи ", "тысяч ")
     var num = n.toString()
     var str = ""
-    if (n !in 1..999999) {
+    if (n < 1 || n > 999999) {
         return ""
     }
     for (i in 1..6 - num.length) {
         num = '0' + num
     }
-    println(num)
-    str += when {
-        num[0] != '0' -> hundreds[num[0] - '0']
-        else -> ""
-    } + when {
-        num[1] - '0' in 2..9 -> dozens[(num[1] - '0') * 10] + when {
-            num[2] == '1' -> "одна "
-            num[2] == '2' -> "две "
-            num[2] - '0' in 3..9 -> units[num[2] - '0']
-            else -> ""
-        }
-        num[1] == '1' -> dozens[(num[2] - '0') + 10]
-        num[1] == '0' -> when {
-            num[2] == '1' -> "одна "
-            num[2] == '2' -> "две "
-            num[2] - '0' in 3..9 -> units[num[2] - '0']
-            else -> ""
-        }
-        else -> ""
-    } + when {
+    str += hundred(num, 1) + when {
         num[2] == '1' && num[1] != '1' -> thousands[0]
         num[2] - '0' in 2..4 && num[1] != '1' -> thousands[1]
         num[2] - '0' in 5..9 || num[1] == '1' || (num[2] == '0' && (num[0] != '0' || num[1] != '0')) -> thousands[2]
         else -> ""
-    } + when {
-        num[3] != '0' -> hundreds[num[3] - '0']
-        else -> ""
-    } + when {
-        num[4] - '0' in 2..9 -> dozens[(num[4] - '0') * 10] + units[num[5] - '0']
-        num[4] == '1' -> dozens[(num[5] - '0') + 10]
-        num[4] == '0' -> when {
-            num[5] != '0' -> units[num[5] - '0']
-            else -> ""
-        }
-        else -> ""
-    }
-    println(str)
+    } + hundred(num, 4)
     return str.substring(0, str.lastIndex)
 }
