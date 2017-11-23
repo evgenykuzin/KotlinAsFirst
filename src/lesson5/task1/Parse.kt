@@ -61,10 +61,7 @@ fun main(args: Array<String>) {
     }
 }
 
-val months = listOf("", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
-
-val numbers = listOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
-
+val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
 
 /**
  * Средняя
@@ -75,20 +72,21 @@ val numbers = listOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    try {
-        val split = str.split(" ")
-        val day = split[0].toInt()
-        val mon = months.indexOf(split[1])
-        val year = split[2].toInt()
+    return try {
         var result = ""
+        val split = str.split(" ").filter { it != "" }
+        if (split.size != 3) {
+            return result
+        }
+        val day = split[0].toInt()
+        val mon = months.indexOf(split[1]) + 1
+        val year = split[2].toInt()
         if (day >= 0 && mon > 0 && year >= 0) {
             result = String.format("%02d.%02d.%d", day, mon, year)
         }
-        return result
+        result
     } catch (e: NumberFormatException) {
-        return ""
-    } catch (e: IndexOutOfBoundsException) {
-        return ""
+        ""
     }
 }
 
@@ -102,10 +100,12 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     return try {
-        val months = months
-        val split = digital.split(".")
+        val split = digital.split(".").filter { it != "" }
+        if (split.size != 3) {
+            return ""
+        }
         val day = split[0].toInt()
-        val mon = months[split[1].toInt()]
+        val mon = months[split[1].toInt() - 1]
         val year = split[2].toInt()
         var result = String.format("%d %s %d", day, mon, year)
         if (digital != dateStrToDigit(result)) {
@@ -113,8 +113,6 @@ fun dateDigitToStr(digital: String): String {
         }
         result
     } catch (e: NumberFormatException) {
-        return ""
-    } catch (e: IndexOutOfBoundsException) {
         return ""
     }
 }
@@ -137,10 +135,9 @@ fun wrongPlus(phone: String): Boolean {
             ('+' in phone && phone[0] != '+') || withoutPlus == "")
 }
 fun flattenPhoneNumber(phone: String): String {
-    val allowable = numbers.map { "$it" } + "+"
     var changedStr = ""
     val partsOfStr = phone.split(" ", ")", "(", "-", "").filter { it != "" }
-    if (partsOfStr.all { it in allowable } && !wrongPlus(phone)) {
+    if (partsOfStr.all { it in "0".."9" || it == "+" } && !wrongPlus(phone)) {
         for (i in partsOfStr) {
             changedStr += i
         }
@@ -161,21 +158,21 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     try {
-        val allowable = numbers + listOf(' ', '-', '%')
+        val allowable = listOf(' ', '-', '%') + ('0'..'9')
         for (i in 0 until jumps.length) {
             if (jumps[i] !in allowable) {
                 return -1
             }
         }
-        val split = jumps.split(" ", "%", "-").filter { it != "" }
+        val split = jumps.split(" ", "%", "-").filter { it != "" }.map { it.toInt() }
         var max = split[0]
         for (i in 0 until split.size) {
-            if (split[i].toInt() > max.toInt()) {
+            if (split[i] > max) {
                 max = split[i]
             }
         }
-        return max.toInt()
-    } catch (e: Exception) {
+        return max
+    } catch (e: IndexOutOfBoundsException) {
         return -1
     }
 }
@@ -205,7 +202,7 @@ fun bestHighJump(jumps: String): Int = TODO()
 fun formatException(expression: String): Boolean {
     return ((expression.matches(Regex("""(?:\d+\s*[-+]\s*)+\d+""")) ||
             expression.matches(Regex("\\d+")))) &&
-            expression.isNotEmpty() && expression != " "
+            expression.isNotEmpty() || expression.length < 3
 }
 
 fun plusMinus(expression: String): Int {
@@ -243,7 +240,6 @@ fun plusMinus(expression: String): Int {
  */
 fun firstDuplicateIndex(str: String): Int {
     val words = str.toLowerCase().split(" ").toMutableList()
-    words.add(" ")
     var index = 0
     for (i in 0..words.size - 2) {
         index += words[i].length
