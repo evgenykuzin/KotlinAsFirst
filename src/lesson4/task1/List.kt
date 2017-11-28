@@ -220,10 +220,11 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  */
 fun factorize(n: Int): List<Int> {
     var m = n
-    var list = listOf(minDivisor(n))
-    while (m != minDivisor(m)) {
-        m /= minDivisor(m)
-        list += minDivisor(m)
+    val minDivisor = minDivisor(n)
+    var list = listOf(minDivisor)
+    while (m != minDivisor) {
+        m /= minDivisor
+        list += minDivisor
     }
     return list
 }
@@ -263,17 +264,20 @@ fun convert(n: Int, base: Int): List<Int> {
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String {
+
     val numberList = convert(n, base)
+    var range = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
     var result = ""
     for (i in 0 until numberList.size) {
-        if (numberList[i] > 9) {
-            result += (numberList[i] + 87).toChar().toString()
+        result += if (numberList[i] > 9) {
+            range[numberList[i] - 10]
         } else {
-            result += numberList[i]
+            numberList[i]
         }
     }
     return result
 }
+
 
 /**
  * Средняя
@@ -282,7 +286,13 @@ fun convertToString(n: Int, base: Int): String {
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var result = 0
+    for (i in 0 until digits.size) {
+        result += power(base, digits.size - i - 1) * digits[i]
+    }
+    return result
+}
 
 
 /**
@@ -296,14 +306,16 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  */
 fun decimalFromString(str: String, base: Int): Int {
     var result = 0
+
+
     for (j in 0 until str.length) {
+
         result += if (str[j] in 'a'..'z') {
-            power(base, str.length - j - 1) * (10 + ('a'..'z').indexOf(str[j]))
+            power(base, str.length - j - 1) * (str[j].toInt() - 87)
         } else {
-            power(base, str.length - j - 1) * (str[j] - '0')
+            power(base, str.length - j - 1) * str[j].toString().toInt()
         }
     }
-    println()
     return result
 }
 

@@ -58,6 +58,7 @@ class Tests {
         assertEquals("", dateDigitToStr("rgrg55g6h::dh'fneg4y6yh4253(&(&(&%$%^@#$^$%UTY#%HYRGTB#$^$#%Y$^$^^%$$%Y$%U&()*)*"))
         assertEquals("", dateDigitToStr("21.23."))
         assertEquals("", dateDigitToStr("21.01.0001"))
+        assertEquals("10 июля 0", dateDigitToStr("10.07.0"))
     }
 
     @Test
@@ -116,9 +117,10 @@ class Tests {
         assertEquals("", mostExpensive(""))
         assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
         assertEquals("Вино", mostExpensive("Вино 255.0"))
-        assertEquals("iphone7", mostExpensive("iphone7 72999.9; hp349ghjf21 32990.0; macbook13 72999.9"))
+        assertEquals("iphone7", mostExpensive("iphone7 72999.9; hp349ghjf21 32990.0; macbook13 72990.9"))
         assertEquals("", mostExpensive("молоко 34.9 хлеб 29.9"))
         assertEquals("", mostExpensive("кумыс 34ко.23; 124.9 лаваш"))
+        assertEquals("eGu--`", mostExpensive("eGu--` 0"))
     }
 
     @Test

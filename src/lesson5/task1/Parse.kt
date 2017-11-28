@@ -101,7 +101,7 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     return try {
         val split = digital.split(".").filter { it != "" }
-        if (split.size != 3 || split.any { it.toInt() < 1 }) {
+        if (split.size != 3 || split.filter { it != split[2] }.any { it.toInt() < 1 }) {
             return ""
         }
         val day = split[0].toInt()
@@ -135,14 +135,14 @@ fun wrongPlus(phone: String): Boolean {
             ('+' in phone && phone[0] != '+') || withoutPlus == "")
 }
 fun flattenPhoneNumber(phone: String): String {
-    var changedStr = ""
+    var changedStr = StringBuilder("")
     val partsOfStr = phone.split(" ", ")", "(", "-", "").filter { it != "" }
     if (partsOfStr.all { it in "0".."9" || it == "+" } && !wrongPlus(phone)) {
         for (i in partsOfStr) {
-            changedStr += i
+            changedStr.append(i)
         }
     }
-    return changedStr
+    return changedStr.toString()
 }
 
 
@@ -273,7 +273,7 @@ fun mostExpensive(description: String): String {
                     val name = nameAndPrice[i].split(' ').filter { it != "" }
                 when {
                     name.size != 2 -> return ""
-                    price > max -> {
+                    price >= max -> {
                         max = price
                         result = name[0]
                     }
