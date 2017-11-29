@@ -101,7 +101,7 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     return try {
         val split = digital.split(".").filter { it != "" }
-        if (split.size != 3 || split.filter { it != split[2] }.any { it.toInt() < 1 }) {
+        if (split.size != 3 || split.subList(0, 2).any { it.toInt() < 1 }) {
             return ""
         }
         val day = split[0].toInt()
@@ -135,7 +135,7 @@ fun wrongPlus(phone: String): Boolean {
             ('+' in phone && phone[0] != '+') || withoutPlus == "")
 }
 fun flattenPhoneNumber(phone: String): String {
-    var changedStr = StringBuilder("")
+    var changedStr = StringBuilder()
     val partsOfStr = phone.split(" ", ")", "(", "-", "").filter { it != "" }
     if (partsOfStr.all { it in "0".."9" || it == "+" } && !wrongPlus(phone)) {
         for (i in partsOfStr) {
@@ -206,25 +206,23 @@ fun formatException(expression: String): Boolean {
 }
 
 fun plusMinus(expression: String): Int {
-    var sum = 0
+    var sum: Int
     if (expression.split(" + ", " - ").none { it != "" }) {
         return expression.toInt()
     }
-
     if (formatException(expression)) {
-        val sumList = expression.split(" + ").filter { it != "" }
-        for (i in 0 until sumList.size) {
-            if (sumList[i].split("").any { it == "-" }) {
-                val minus = sumList[i].split(" - ").filter { it != "" }[0].toInt() -
-                        sumList[i].split(" - ").filter { it != "" }[1].toInt()
-                sum += minus
-            } else {
-                sum += sumList[i].toInt()
+        val sumList = expression.split(" ")
+        sum = sumList[0].toInt()
+        for (i in 1 until sumList.size - 1 step 2) {
+            when {
+                sumList[i] == "-" -> sum -= sumList[i + 1].toInt()
+                sumList[i] == "+" -> sum += sumList[i + 1].toInt()
             }
         }
     } else {
         throw IllegalArgumentException("Invalid expression!")
     }
+
     return sum
 }
 
@@ -271,14 +269,14 @@ fun mostExpensive(description: String): String {
                 for (i in 0 until nameAndPrice.size) {
                     val price = nameAndPrice[i].split(' ').filter { it != "" }[1].toDouble()
                     val name = nameAndPrice[i].split(' ').filter { it != "" }
-                when {
-                    name.size != 2 -> return ""
-                    price >= max -> {
+                    when {
+                        name.size != 2 -> return ""
+                        price >= max -> {
                         max = price
                         result = name[0]
+                        }
                     }
                 }
-            }
             } catch (e: NumberFormatException) {
                 return ""
             }

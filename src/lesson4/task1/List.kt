@@ -220,11 +220,14 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  */
 fun factorize(n: Int): List<Int> {
     var m = n
-    val minDivisor = minDivisor(n)
-    var list = listOf(minDivisor)
-    while (m != minDivisor) {
-        m /= minDivisor
-        list += minDivisor
+    var list = listOf<Int>()
+    var i = 2
+    while (i <= m && m > 0) {
+        while (m % i == 0) {
+            m /= i
+            list += i
+        }
+        i++
     }
     return list
 }
@@ -266,7 +269,12 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
 
     val numberList = convert(n, base)
-    var range = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    var range =
+            listOf('a', 'b', 'c', 'd',
+                    'e', 'f', 'g', 'h', 'i', 'j',
+                    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+                    's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+            )
     var result = ""
     for (i in 0 until numberList.size) {
         result += if (numberList[i] > 9) {
@@ -311,7 +319,7 @@ fun decimalFromString(str: String, base: Int): Int {
     for (j in 0 until str.length) {
 
         result += if (str[j] in 'a'..'z') {
-            power(base, str.length - j - 1) * (str[j].toInt() - 87)
+            power(base, str.length - j - 1) * (str[j] - 87).toInt()
         } else {
             power(base, str.length - j - 1) * str[j].toString().toInt()
         }
