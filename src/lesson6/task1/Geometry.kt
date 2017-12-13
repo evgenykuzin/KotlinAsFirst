@@ -2,6 +2,7 @@
 package lesson6.task1
 
 import lesson1.task1.sqr
+import javax.print.attribute.standard.MediaSize
 
 /**
  * Точка на плоскости
@@ -173,21 +174,41 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line {
+    var angle = Math.atan2((s.end.y - s.begin.y), (s.end.x - s.begin.x))
+    when {
+        angle < 0 -> angle += Math.PI
+        angle == Math.PI -> angle -= Math.PI
+        else -> IllegalArgumentException()
+    }
+    return Line(s.begin, angle)
+}
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line {
+    var angle = Math.atan2((a.y - b.y), (a.x - b.x))
+    when {
+        angle < 0 -> angle += Math.PI
+        angle == Math.PI -> angle -= Math.PI
+        else -> IllegalArgumentException()
+    }
+    return Line(a, angle)
+}
 
 /**
  * Сложная
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {
+    val midPoint = Point((a.x + b.x) / 2, (a.y + b.y) / 2)
+    var angle = (b.y - a.y) / (b.x - a.x)
+    return Line(midPoint, angle)
+}
 
 /**
  * Средняя
@@ -195,7 +216,32 @@ fun bisectorByPoints(a: Point, b: Point): Line = TODO()
  * Задан список из n окружностей на плоскости. Найти пару наименее удалённых из них.
  * Если в списке менее двух окружностей, бросить IllegalArgumentException
  */
-fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
+fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
+    if (circles.size < 2) throw IllegalArgumentException("No circles...")
+    var minDistance = circles[0].center.distance(circles[1].center)
+    var maxRadius = circles[0].radius
+    var result = Pair(circles[0], circles[1])
+    for (i in 0 until circles.size) {
+        for (j in 0 until circles.size) {
+            if (j != i) {
+                println(i)
+                var thatDistance = circles[i].center.distance(circles[j].center)
+                var thatRadius = circles[i].radius
+                when {
+                    thatDistance < minDistance -> {
+                        minDistance = thatDistance
+                        result = Pair(circles[i], circles[j])
+                    }
+                    thatDistance == minDistance -> if (thatRadius > maxRadius) {
+                        result = Pair(circles[i], circles[j])
+                    }
+                    else -> IllegalArgumentException()
+                }
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Сложная

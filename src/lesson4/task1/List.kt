@@ -269,16 +269,10 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
 
     val numberList = convert(n, base)
-    var range =
-            listOf('a', 'b', 'c', 'd',
-                    'e', 'f', 'g', 'h', 'i', 'j',
-                    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-                    's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-            )
     var result = ""
     for (i in 0 until numberList.size) {
         result += if (numberList[i] > 9) {
-            range[numberList[i] - 10]
+            (numberList[i] - 10 + 'a'.toInt()).toChar()
         } else {
             numberList[i]
         }
@@ -319,7 +313,7 @@ fun decimalFromString(str: String, base: Int): Int {
     for (j in 0 until str.length) {
 
         result += if (str[j] in 'a'..'z') {
-            power(base, str.length - j - 1) * (str[j] - 87).toInt()
+            power(base, str.length - j - 1) * (str[j] - 'a' + 10)
         } else {
             power(base, str.length - j - 1) * str[j].toString().toInt()
         }

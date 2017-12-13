@@ -2,6 +2,8 @@
 package lesson6.task2
 
 import jdk.nashorn.internal.objects.NativeArray.indexOf
+import lesson4.task1.abs
+import lesson4.task1.power
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -74,7 +76,7 @@ fun square(notation: String): Square {
 fun rookMoveNumber(start: Square, end: Square): Int = when {
     start == end -> 0
     start.column == end.column || start.row == end.row -> 1
-    !start.inside() || !end.inside() -> throw IllegalArgumentException("square is not correct")
+    !start.inside() || !end.inside() -> throw IllegalArgumentException("rookMoveNumber: square is not correct")
     else -> 2
 }
 
@@ -93,9 +95,6 @@ fun rookMoveNumber(start: Square, end: Square): Int = when {
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun rookTrajectory(start: Square, end: Square): List<Square> {
-    if (!start.inside() || !end.inside()) {
-        throw IllegalArgumentException("square is not correct")
-    }
     val move = rookMoveNumber(start, end)
     return when (move) {
         0 -> listOf(start)
@@ -127,7 +126,17 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
  * Примеры: bishopMoveNumber(Square(3, 1), Square(6, 3)) = -1; bishopMoveNumber(Square(3, 1), Square(3, 7)) = 2.
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
-fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
+fun bishopMoveNumber(start: Square, end: Square): Int {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException("bishopMoveNumber: some square is not correct")
+    val stepRow = Math.abs(start.row - end.row)
+    val stepCol = Math.abs(start.column - end.column)
+    return when {
+        start == end -> 0
+        stepRow == stepCol -> 1
+        (stepRow % 2 == 0) == (stepCol % 2 == 0) -> 2
+        else -> -1
+    }
+}
 
 /**
  * Сложная
@@ -147,7 +156,29 @@ fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
  *          bishopTrajectory(Square(1, 3), Square(6, 8)) = listOf(Square(1, 3), Square(6, 8))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun bishopTrajectory(start: Square, end: Square): List<Square> {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException("bishopTrajectory: some square is not correct")
+    var n = Square(start.column, start.row)
+    return when (bishopMoveNumber(start, end)) {
+        -1 -> listOf()
+        0 -> listOf(start)
+        1 -> listOf(start, end)
+        else -> {
+            var stepCol = 1
+            var stepRow = 1
+            var column = start.column
+            var row = start.row
+            if (start.column >= 5 || start.column > end.column) stepCol = -1
+            if (start.row >= 5 || start.row > end.row) stepRow = -1
+            while (bishopMoveNumber(n, end) != 1) {
+                column += stepCol
+                row += stepRow
+                n = Square(column, row)
+            }
+            listOf(start, n, end)
+        }
+    }
+}
 
 /**
  * Средняя

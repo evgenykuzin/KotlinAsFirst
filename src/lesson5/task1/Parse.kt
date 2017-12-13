@@ -206,24 +206,27 @@ fun formatException(expression: String): Boolean {
 }
 
 fun plusMinus(expression: String): Int {
-    var sum: Int
-    if (expression.split(" + ", " - ").none { it != "" }) {
-        return expression.toInt()
-    }
-    if (formatException(expression)) {
-        val sumList = expression.split(" ")
-        sum = sumList[0].toInt()
-        for (i in 1 until sumList.size - 1 step 2) {
-            when {
-                sumList[i] == "-" -> sum -= sumList[i + 1].toInt()
-                sumList[i] == "+" -> sum += sumList[i + 1].toInt()
-            }
+    try {
+        var sum: Int
+        if (expression.split(" + ", " - ").none { it != "" }) {
+            return expression.toInt()
         }
-    } else {
-        throw IllegalArgumentException("Invalid expression!")
+        if (formatException(expression)) {
+            val sumList = expression.split(" ")
+            sum = sumList[0].toInt()
+            for (i in 1 until sumList.size - 1 step 2) {
+                when {
+                    sumList[i] == "-" -> sum -= sumList[i + 1].toInt()
+                    sumList[i] == "+" -> sum += sumList[i + 1].toInt()
+                }
+            }
+        } else {
+            throw IllegalArgumentException("Invalid expression!")
+        }
+        return sum
+    } catch (e: NumberFormatException) {
+        throw IllegalArgumentException("NumberFormatException")
     }
-
-    return sum
 }
 
 
@@ -267,8 +270,8 @@ fun mostExpensive(description: String): String {
         if (nameAndPrice.isNotEmpty()) {
             try {
                 for (i in 0 until nameAndPrice.size) {
-                    val price = nameAndPrice[i].split(' ').filter { it != "" }[1].toDouble()
                     val name = nameAndPrice[i].split(' ').filter { it != "" }
+                    val price = name[1].toDouble()
                     when {
                         name.size != 2 -> return ""
                         price >= max -> {
