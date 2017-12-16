@@ -76,7 +76,25 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
  *  1  2  2  2  2  1
  *  1  1  1  1  1  1
  */
-fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateRectangles(height: Int, width: Int): Matrix<Int> {
+    if (height <= 0 || width <= 0) throw IllegalArgumentException("matrix is not exist")
+    var matrix = createMatrix(height, width, 1)
+    if (height in 1..2 || width in 1..2) return matrix
+    var value = 2
+    do {
+        for (i in value - 1..width - value) {
+            matrix[value - 1, i] = value
+            matrix[height - value, i] = value
+        }
+
+        for (i in value - 1..height - value) {
+            matrix[i, value - 1] = value
+            matrix[i, width - value] = value
+        }
+        value++
+    } while (value < height && value < width)
+    return matrix
+}
 
 /**
  * Сложная
@@ -91,7 +109,37 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
  * 10 13 16 18
  * 14 17 19 20
  */
-fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSnake(height: Int, width: Int): Matrix<Int> {
+    if (height <= 0 || width <= 0) throw IllegalArgumentException("error 404 not found")
+    var matrix = createMatrix(height, width, 1)
+    var value = 1
+    if (width > 2) {
+        for (i in 0 until width) {
+            var j = 0
+            while (i - j >= 0) {
+                matrix[j, i - j] = value
+                value++
+                j++
+            }
+        }
+        for (i in 1 until height) {
+            var j = 0
+            while (i + j <= height - 1) {
+                matrix[i + j, width - 1 - j] = value
+                value++
+                j++
+            }
+        }
+    } else {
+        for (i in 0 until height) {
+            for (j in 0 until width) {
+                matrix[i, j] = value
+                value++
+            }
+        }
+    }
+    return matrix
+}
 
 /**
  * Средняя
@@ -104,7 +152,15 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
  * 4 5 6      8 5 2
  * 7 8 9      9 6 3
  */
-fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO()
+fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
+    var result = createMatrix(matrix.width, matrix.height, matrix[0, 0])
+    for (i in 0 until matrix.height) {
+        for (j in 0 until matrix.height) {
+            result[i, j] = matrix[matrix.height - 1 - j, i]
+        }
+    }
+    return result
+}
 
 /**
  * Сложная

@@ -52,7 +52,6 @@ fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> {
  */
 class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : Matrix<E> {
     private val list = mutableListOf<E>()
-
     init {
         for (i in 0 until height * width) {
             list.add(e)

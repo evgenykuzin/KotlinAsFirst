@@ -2,6 +2,7 @@
 package lesson6.task2
 
 import jdk.nashorn.internal.objects.NativeArray.indexOf
+import lesson1.task1.sqr
 import lesson4.task1.abs
 import lesson4.task1.power
 
@@ -168,8 +169,9 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
             var stepRow = 1
             var column = start.column
             var row = start.row
-            if (start.column >= 5 || start.column > end.column) stepCol = -1
-            if (start.row >= 5 || start.row > end.row) stepRow = -1
+            if (start.column >= 5 || start.column >= end.column) stepCol = -1
+            if (start.row >= 5 || start.row >=
+                    end.row) stepRow = -1
             while (bishopMoveNumber(n, end) != 1) {
                 column += stepCol
                 row += stepRow
@@ -200,7 +202,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-fun kingMoveNumber(start: Square, end: Square): Int = TODO()
+fun kingMoveNumber(start: Square, end: Square): Int = Math.sqrt(sqr(start.column.toDouble() - end.column) + sqr(start.row.toDouble() - end.row)).toInt()
 
 /**
  * Сложная
@@ -213,7 +215,9 @@ fun kingMoveNumber(start: Square, end: Square): Int = TODO()
  *          (здесь возможны другие варианты)
  *          kingTrajectory(Square(3, 1), Square(6, 3)) = listOf(Square(3, 1), Square(4, 2), Square(5, 2), Square(6, 3))
  *          (здесь возможен единственный вариант)
- *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
+ *          kingTrajectory(Square(3, 5), Square(6, 2)) = l
+ *
+ *          listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
