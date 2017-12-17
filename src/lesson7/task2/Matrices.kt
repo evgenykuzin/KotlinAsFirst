@@ -86,13 +86,12 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> {
             matrix[value - 1, i] = value
             matrix[height - value, i] = value
         }
-
         for (i in value - 1..height - value) {
             matrix[i, value - 1] = value
             matrix[i, width - value] = value
         }
         value++
-    } while (value < height && value < width)
+    } while (value <= Math.ceil(width / 2.0).toInt() && value <= Math.ceil(height / 2.0).toInt())
     return matrix
 }
 
