@@ -79,7 +79,7 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
 fun generateRectangles(height: Int, width: Int): Matrix<Int> {
     if (height <= 0 || width <= 0) throw IllegalArgumentException("matrix is not exist")
     var matrix = createMatrix(height, width, 1)
-    if (height in 1..2 || width in 1..2) return matrix
+    if (height <= 2 || width <= 2) return matrix
     var value = 2
     do {
         for (i in value - 1..width - value) {
@@ -112,6 +112,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
     if (height <= 0 || width <= 0) throw IllegalArgumentException("error 404 not found")
     var matrix = createMatrix(height, width, 1)
     var value = 1
+    var start = 1
     if (width > 2) {
         for (i in 0 until width) {
             var j = 0
@@ -121,13 +122,16 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
                 j++
             }
         }
-        for (i in 1 until height) {
-            var j = 0
-            while (i + j <= height - 1) {
-                matrix[i + j, width - 1 - j] = value
-                value++
-                j++
+        while (value < width * height) {
+            for (i in start until height) {
+                var j = 0
+                while (i + j <= height - 1) {
+                    matrix[i + j, width - 1 - j] = value
+                    value++
+                    j++
+                }
             }
+            start++
         }
     } else {
         for (i in 0 until height) {
@@ -342,3 +346,37 @@ fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> = TODO(
  * Перед решением этой задачи НЕОБХОДИМО решить предыдущую
  */
 fun fifteenGameSolution(matrix: Matrix<Int>): List<Int> = TODO()
+
+
+fun calculatingResults(text: String): Map<String, Int> {
+    if (text.toLowerCase().matches(Regex("""([а-яё]+-[а-яё]+\s+\d+:\d+;\s*)+"""))) throw IllegalArgumentException("error")
+    try {
+        val matches = text.split("; ")
+        var match: List<String>
+        var teamResults = mutableMapOf<String, Int>()
+        for (i in 0 until matches.size) {
+            match = matches[i].split("-", " ", ":")
+            if (match[0] !in teamResults) {
+                teamResults.put(match[0], 0)
+            }
+            if (match[1] !in teamResults) {
+                teamResults.put(match[1], 0)
+            }
+            when {
+                match[2] == match[3] -> {
+                    teamResults[match[0]] = teamResults[match[0]].toString().toInt() + 1
+                    teamResults[match[1]] = teamResults[match[1]].toString().toInt() + 1
+                }
+                match[2] > match[3] -> {
+                    teamResults[match[0]] = teamResults[match[0]].toString().toInt() + 3
+                }
+                match[2] < match[3] -> {
+                    teamResults[match[1]] = teamResults[match[1]].toString().toInt() + 3
+                }
+            }
+        }
+        return teamResults
+    } catch (e: IndexOutOfBoundsException) {
+        throw IllegalArgumentException()
+    }
+}

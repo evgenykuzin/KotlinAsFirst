@@ -116,7 +116,21 @@ class Tests {
                         listOf(10, 13, 16, 18),
                         listOf(14, 17, 19, 20)
                 )), generateSnake(5, 4))
+        assertEquals(createMatrix(10, 6,
+                listOf(
+                        listOf(1, 2, 4, 7, 11, 16),
+                        listOf(3, 5, 8, 12, 17, 22),
+                        listOf(6, 9, 13, 18, 23, 28),
+                        listOf(10, 14, 19, 24, 29, 34),
+                        listOf(15, 20, 25, 30, 35, 40),
+                        listOf(21, 26, 31, 36, 41, 46),
+                        listOf(27, 32, 37, 42, 47, 51),
+                        listOf(33, 38, 43, 48, 52, 55),
+                        listOf(39, 44, 49, 53, 56, 58),
+                        listOf(45, 50, 54, 57, 59, 60)
 
+
+                )), generateSnake(10, 6))
     }
 
     @Test
@@ -279,4 +293,14 @@ class Tests {
         createMatrix(4, 4, listOf(listOf(0, 1, 2, 3), listOf(4, 5, 6, 7),
                 listOf(8, 9, 10, 11), listOf(12, 13, 14, 15))).assertSolution()
     }
+
+    @Test
+    @Tag("Impossible")
+    fun calculatingResults() {
+        assertEquals(mapOf("зенит" to 6, "цска" to 0, "спартак" to 1, "динамо" to 1), calculatingResults("зенит-цска 3:0; зенит-спартак 3:0; спартак-динамо 1:1"))
+        assertEquals(mapOf("зенит" to 2, "цска" to 1, "спартак" to 2, "динамо" to 1), calculatingResults("зенит-цска 0:0; зенит-спартак 0:0; спартак-динамо 0:0"))
+        assertEquals(mapOf("зенит" to 3, "цска" to 4, "спартак" to 7, "динамо" to 1), calculatingResults("зенит-цска 0:0; зенит-спартак 1:1; спартак-динамо 1:0; " +
+                "зенит-динамо 1:1; спартак-цска 2:3; спартак-динамо 6:0"))
+    }
 }
+

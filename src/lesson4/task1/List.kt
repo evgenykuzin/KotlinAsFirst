@@ -222,7 +222,7 @@ fun factorize(n: Int): List<Int> {
     var m = n
     var list = listOf<Int>()
     var i = 2
-    while (i <= m && m > 0) {
+    while (i <= m) {
         while (m % i == 0) {
             m /= i
             list += i
@@ -272,7 +272,7 @@ fun convertToString(n: Int, base: Int): String {
     var result = ""
     for (i in 0 until numberList.size) {
         result += if (numberList[i] > 9) {
-            (numberList[i] - 10 + 'a'.toInt()).toChar()
+            ('a' + numberList[i] - 10)
         } else {
             numberList[i]
         }
@@ -359,23 +359,25 @@ fun firstUnit(units: List<String>, num: String): String = when {
     else -> ""
 }
 
-fun hundred(num: String, i: Int): String = when {
-    num[i - 1] != '0' -> hundreds[num[i - 1] - '0']
-    else -> ""
-} + when {
-    num[i] - '0' in 2..9 -> dozens[(num[i] - '0') * 10] + when (i) {
-        1 -> firstUnit(units, num)
-        else -> units[num[i + 1] - '0']
-    }
-    num[i] == '0' -> when (i) {
-        1 -> firstUnit(units, num)
-        else -> when {
-            num[i + 1] != '0' -> units[num[i + 1] - '0']
-            else -> ""
+fun hundred(num: String, i: Int): String {
+    return when {
+        num[i - 1] != '0' -> hundreds[num[i - 1] - '0']
+        else -> ""
+    } + when {
+        num[i] - '0' in 2..9 -> dozens[(num[i] - '0') * 10] + when (i) {
+            1 -> firstUnit(units, num)
+            else -> units[num[i + 1] - '0']
         }
+        num[i] == '0' -> when (i) {
+            1 -> firstUnit(units, num)
+            else -> when {
+                num[i + 1] != '0' -> units[num[i + 1] - '0']
+                else -> ""
+            }
+        }
+        num[i] == '1' -> dozens[(num[i + 1] - '0') + 10]
+        else -> ""
     }
-    num[i] == '1' -> dozens[(num[i + 1] - '0') + 10]
-    else -> ""
 }
 
 fun russian(n: Int): String {

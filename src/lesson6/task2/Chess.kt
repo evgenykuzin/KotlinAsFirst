@@ -28,11 +28,10 @@ data class Square(val column: Int, val row: Int) {
      */
 
     fun notation(): String {
-        val range = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
         if (!inside()) {
             return ""
         }
-        return range[column - 1] + row.toString()
+        return return 'a' + column - 1 + row.toString()
     }
 }
 
@@ -44,11 +43,11 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    val range = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
-    if (notation[0] !in range || notation[1] !in '1'..'8') {
+
+    if (notation.length != 2 || notation[0] !in 'a'..'h' || notation[1] !in '1'..'8') {
         throw IllegalArgumentException("Notation is not correct")
     }
-    return Square(range.indexOf(notation[0] + 1), notation[1] - '0')
+    return Square(notation[0] - 'a' + 1, notation[1].toInt() - '0'.toInt())
 }
 
 /**
